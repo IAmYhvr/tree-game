@@ -1,0 +1,41 @@
+* {
+    outline: none;
+}
+
+body {
+    margin: 0px;
+}
+
+#tree-canvas {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: -999;
+}
+
+#studytable {
+    display: flex !important;
+    justify-content: center;
+}
+
+.btn {
+    font-weight: bold;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.5s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    vertical-align: top;
+    margin:7px;
+}
+
+.btn-unbought {
+    background-color: lightgray;
+}
+
+.btn-locked {
+    background-color: gray;
+}

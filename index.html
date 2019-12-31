@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tree Game</title>
+    <link type="text/css" rel="stylesheet" href="game.css">
+</head>
+<body>
+    <!-- Blank <td style="opacity: 0;"><button class="btn"></button></td> -->
+    <p id="amounts"><span id="x">You have 0 x.</span> Idea & a bit of code from <a href="https://ivark.github.io">Antimatter Dimensions</a>.</p>
+    <table class="table" id="studytable">
+        <tr>
+            <td><button class="btn btn-unbought" id="14" onclick="buybtn(14, new OmegaNum(500), 'x')">Increase core production of x to 25.<br>Cost: Sanity</button></td>
+            <td><button class="btn btn-unbought" id="15" onclick="buybtn(15, new OmegaNum(0), 'x')">Begin production of x.<br>Cost: Sanity</button></td>
+        </tr>
+    </table>
+    <br>
+    <table class="table" id="studytable">
+        <tr>
+            <td><button class="btn btn-locked" id="23" onclick="buybtn(23, new OmegaNum(100), 'x')">Increase x production to x<sup>2</sup>/t.<br>Cost: 100 x</button></td>
+            <td><button class="btn btn-locked" id="24" onclick="buybtn(24, new OmegaNum(25), 'x')">Increase x production to 5/t<br>Cost: 25x</button></td>
+            <td><button class="btn btn-locked" id="25" onclick="buybtn(25, new OmegaNum(1e10), 'x')">Enter the era of y.<br>>Cost: 1e10 x</button></td>
+        </tr>
+    </table>
+    <table class="table" id="studytable">
+        <tr>
+            <td><button class="btn btn-locked" id="34" onclick="buybtn(34, new OmegaNum(25), 'x')">Increase x production to 5/t<br>Cost: 25x</button></td>
+            <td><button class="btn btn-locked" id="35" onclick="buybtn(35, new OmegaNum(1e10), 'x')">Enter the era of y.<br>>Cost: 1e10 x</button></td>
+        </tr>
+    </table>
+    <table class="table" id="studytable">
+        <tr>
+            <td><button class="btn btn-locked" id="44" onclick="buybtn(44, new OmegaNum(25), 'x')">Increase x production to 5/t<br>Cost: 25x</button></td>
+            <td><button class="btn btn-locked" id="45" onclick="buybtn(45, new OmegaNum(1e10), 'x')">Enter the era of y.<br>>Cost: 1e10 x</button></td>
+        </tr>
+    </table>
+    <canvas id="tree-canvas"></canvas>
+
+    <script src="OmegaNum.js"></script>
+    <script src="game.js"></script>
+    <script src="render.js"></script>
+    <script>init()</script>
+</body>
+</html>
