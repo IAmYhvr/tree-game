@@ -82,6 +82,8 @@ function load() {
     if (game.upgrades.includes(15)) document.querySelector("#x").style.display = "inline-block"
     if (game.upgrades.includes(26)) document.querySelector("#y").style.display = "inline-block"
     if (game.upgrades.includes(55)) document.querySelector("#z").style.display = "inline-block"
+    document.getElementById("themecss").href = "themes/" + themes[game.theme] + ".css"
+    document.getElementById("theme").textContent = themes[game.theme]
     game.upgrades.forEach(upg => {
         document.getElementById(upg).classList.remove("btn-unbought")
         document.getElementById(upg).classList.add("btn-bought")
