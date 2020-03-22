@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tree Game</title>
+	<link type="text/css" rel="stylesheet" href="game.css">
+	<link id="themecss" type="text/css" rel="stylesheet" href="themes/light.css">
+</head>
+<body>
+	<div id="header">
+		<button class="btn" id="upgrades" onclick="showTab('upgrades')">Upgrades</button>
+		<button class="btn" id="options" onclick="showTab('options')">Options</button>
+		<div id="currencies">
+			<span id="x">x: 0</span>
+			<span id="y">y: 0</span>
+		</div>
+	</div>
+    
+    <span id="upgradesTab" class="tab"> <!-- Upgrade tab -->
+      <table class="table">
+        <tr>
+            <td><button class="btn btn-locked" id="13" onclick="buybtn(13, new Decimal(2e4), 'x')">Raise x to the power of 1.5.<br>Cost: 2e4x</button></td>
+            <td><button class="btn btn-locked" id="14" onclick="buybtn(14, new Decimal(2500), 'x')">Increase core production of x by 25.<br>Cost: 2500x</button></td>
+            <td><button class="btn btn-unbought" id="15" onclick="buyCurrency(15, new Decimal(0), 'x', 'x')">Begin production of x.<br>Cost: Sanity</button></td>
+            <td><button class="btn btn-locked" id="16" onclick="buybtn(16, new Decimal(100), 'x')">Increase core production of x by 10.<br>Cost: 100x</button></td>
+            <td style="opacity: 0;"><button class="btn"></button></td>
+        </tr>
+    </table>
+    <br>
+    <table class="table">
+        <tr>
+			<td><button class="btn btn-locked" id="23" onclick="buybtn(23, new Decimal(1e6), 'x')">Multiply x by 10.<br>Cost: 1e6x</button></td>
+            <td><button class="btn btn-locked" id="24" onclick="buybtn(24, new Decimal(250), 'x')">Increase x production to x<sup>2</sup>.<br>Cost: 250x</button></td>
+            <td><button class="btn btn-locked" id="25" onclick="buybtn(25, new Decimal(5), 'x')">Increase x production by 5.<br>Cost: 5x</button></td>
+			<td><button class="btn btn-locked" id="26" onclick="buyCurrency(26, new Decimal(1e8), 'x', 'y')">Enter the era of y.<br>Cost: 1e8x</button></td>
+			<td><button class="btn btn-locked" id="27" onclick="buybtn(27, new Decimal(1e8), 'x')">Multiply y production by 5.<br>Cost: 1e8x</button></td>
+        </tr>
+    </table>
+    <table class="table">
+        <tr>
+            <td style="opacity: 0;"><button class="btn"></button></td>
+            <td><button class="btn btn-locked" id="35" onclick="buybtn(35, new Decimal(10), 'y')">y boosts x production at a rate of y<sup>1/6</sup>.<br>Cost: 10y</button></td>
+            <td><button class="btn btn-locked" id="36" onclick="buybtn(36, new Decimal(750), 'y')">Multiply x production by 5.<br>Cost: 750y</button></td>
+        </tr>
+    </table>
+    <table class="table">
+        <tr>
+            <td><button class="btn btn-locked" id="44" onclick="buybtn(44, new Decimal(5e9), 'x')">Square y production.<br>Cost: 5e9x</button></td>
+            <td><button class="btn btn-locked" id="45" onclick="buybtn(45, new Decimal(100), 'y')">Multiply y gain by 2.<br>Cost: 100y</button></td>
+            <td style="opacity: 0;"><button class="btn"></button></td>
+        </tr>
+    </table>
+    <canvas id="tree-canvas"></canvas></span>
+	<span id="optionsTab" class="tab"> <!-- Options Tab-->
+        <button class="btn" onclick="changeTheme()">Change Theme<br>Currently <span id="theme">light</span>.</button>
+        <button class="btn" onclick="changeNotation()">Change Notation<br>Currently <span id="notation">Scientific</span>.</button>
+        <button class="btn" onclick="save()">Save Game</button>
+        <button class="btn" onclick="resetGame()">Reset Game</button><br>
+        <button class="btn" onclick="exportGame()">Export Game</button>
+        <button class="btn" onclick="importGame()">Import Game (WIP)</button>
+		<p id="amounts">Idea & a bit of code from <a href="https://ivark.github.io">Antimatter Dimensions</a>. Also using <a href="https://github.com/antimatter-dimensions/notations">notations</a> and <a href="https://github.com/pieroxy/lz-string">LZString</a>. Why don't you join the  <a href="https://discord.gg/rrUUUJn">Discord Server</a>?</p>
+	</span>
+  
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/break_infinity.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@antimatter-dimensions/notations"></script>
+    <script type="text/javascript" src="lzstring.js"></script>
+	<script type="text/javascript" src="render.js"></script>
+	<script type="text/javascript" src="options.js"></script>
+    <script type="text/javascript" src="game.js"></script>
+    <script>let x = window.setTimeout(()=>{resizeCanvas();window.clearTimeout(x)}, 250); if (localStorage.getItem("treegamesave") != null || localStorage.getItem("treegamesave") != undefined || localStorage.getItem("treegamesave") != "{}") load()</script>
+</body>
+</html>

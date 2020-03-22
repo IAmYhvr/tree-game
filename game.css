@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+* {
+    outline: none;
+    font-family: "Inter", sans-serif
+}
+
+body {
+    margin: 0px;
+}
+
+#tree-canvas {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    z-index: -999;
+}
+
+#currencies * {
+	display: none;
+}
+
+#header {
+	width: 100%
+}
+
+.table {
+    display: flex !important;
+    justify-content: center;
+}
+
+.btn {
+    font-weight: bold;
+    width: 170px;
+    height: 80px;
+    transition-duration: 0.5s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    vertical-align: top;
+    margin:7px;
+    z-index: 999;
+}
+
+.btn-unbought {
+    background-color: lightgray;
+}
+
+.btn-locked {
+    background-color: gray;
+}
