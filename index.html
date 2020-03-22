@@ -14,6 +14,7 @@
 		<div id="currencies">
 			<span id="x">x: 0</span>
 			<span id="y">y: 0</span>
+			<span id="z">z: 0</span>
 		</div>
 	</div>
     
@@ -46,9 +47,14 @@
     </table>
     <table class="table">
         <tr>
-            <td><button class="btn btn-locked" id="44" onclick="buybtn(44, new Decimal(5e9), 'x')">Square y production.<br>Cost: 5e9x</button></td>
+            <td><button class="btn btn-locked" id="44" onclick="buybtn(44, new Decimal(1e9), 'x')">Square y production.<br>Cost: 1e9x</button></td>
             <td><button class="btn btn-locked" id="45" onclick="buybtn(45, new Decimal(100), 'y')">Multiply y gain by 2.<br>Cost: 100y</button></td>
-            <td style="opacity: 0;"><button class="btn"></button></td>
+            <td><button class="btn btn-locked" id="46" onclick="buybtn(46, new Decimal(1e4), 'y')">Square x production.<br>Cost: 1e4y</button></td>
+        </tr>
+    </table>
+    <table class="table">
+        <tr>
+            <td><button class="btn btn-locked" id="55" onclick="buyCurrency(55, new Decimal(7.5e15), 'x', 'z')">Unlock z.<br>Cost: 7.5e15x</button></td>
         </tr>
     </table>
     <canvas id="tree-canvas"></canvas></span>

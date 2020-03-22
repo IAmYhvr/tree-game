@@ -58,7 +58,7 @@ function save() {
 // load the game
 function load() {
     let str = localStorage.getItem("treegamesave");
-    if (str === null) return;
+    if (str === undefined) return;
     let sav = stringToDecimal(JSON.parse(str));
     // account for old versions
     if (sav.version == 1) {
@@ -66,8 +66,15 @@ function load() {
         sav.notation = 0
     }
     if (sav.version == 2) {
+        sav.version++
         if (sav.upgrades.indexOf(41) >= 0) {
             sav.upgrades[sav.upgrades.indexOf(41)] = 45
+        }
+    }
+    if (sav.version == 3) {
+        sav.version++
+        sav.z = {
+            amount: new Decimal(0)
         }
     }
     game = sav;

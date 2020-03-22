@@ -5,10 +5,13 @@ var game = {
     y: {
         amount: new Decimal(0)
     },
+    z: {
+        amount: new Decimal(0)
+    },
     upgrades: [],
     theme: 0,
     notation: 0,
-    version: 3
+    version: 4
 }
 
 // i actually have no clue
@@ -25,13 +28,15 @@ function gc(e, f, o=0) {
 }
 
 const childList = {
-    15: [25, 26, 16],
-  	25: [24],
-	24: [14, 23],
-    26: [35, 27],
     14: [13],
+    15: [25, 26, 16],
+	24: [14, 23],
+  	25: [24],
+    26: [35, 27],
     35: [45, 36],
-    45: [44]
+    36: [46],
+    45: [44],
+    46: [55]
 }
 
 function showTab(name) {
@@ -99,6 +104,7 @@ function update() {
     // update currency display
 	document.querySelector("#x").textContent = "x: " + not.format(game.x.amount, 2, 0)
 	document.querySelector("#y").textContent = "y: " + not.format(game.y.amount, 2, 0)
+	document.querySelector("#z").textContent = "z: " + not.format(game.z.amount, 2, 0)
 }
 
 // show intial tab so everything isn't on one screen
@@ -121,6 +127,7 @@ window.setInterval(() => {
 			if (u.includes(35)) ata = ata.times(game.y.amount.pow(1/6))
             if (u.includes(23)) ata = ata.times(10)
             if (u.includes(36)) ata = ata.times(5)
+            if (u.includes(46)) ata = ata.pow(2)
 		  
 			game.x.amount = game.x.amount.add(ata)
 		}
@@ -134,6 +141,12 @@ window.setInterval(() => {
 
 			game.y.amount = game.y.amount.add(ata)
 		}
+
+        if (u.includes(55)) {
+            ata = new Decimal(1)
+
+            game.z.amount = game.z.amount.add(ata)
+        }
 
         update()
 }, 1000)
