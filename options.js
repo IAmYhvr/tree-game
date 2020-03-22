@@ -1,6 +1,7 @@
+// create datasets
 var themes = ["light", "dark"]
 var notations = ["Scientific", "Engineering", "MixedScientific", "MixedEngineering", "Logarithm", "Letters", "Standard", "Dots", "Clock", "Blind"]
-var fancyNotations = [,,"Mixed Scientific","Mixed Engineering"]
+var fancyNotations = [undefined, undefined, "Mixed Scientific", "Mixed Engineering"]
 
 function changeTheme() {
     game.theme++
@@ -16,6 +17,7 @@ function changeNotation() {
     document.getElementById("notation").textContent = fancyNotations[game.notation] != null || fancyNotations[game.notation] != undefined ? fancyNotations[game.notation] : notations[game.notation]
 }
 
+// Recursively convert "Decimal" to string
 function decimalToString(obj) {
     let ret = {};
     for (const key in obj) {
@@ -31,7 +33,7 @@ function decimalToString(obj) {
     }
     return ret
 }
-
+// Recursively convert string to "Decimal"
 function stringToDecimal(obj) {
     let ret = {};
     for (const key in obj) {
@@ -47,17 +49,18 @@ function stringToDecimal(obj) {
     }
     return ret
 }
-
+// save the game
 function save() {
     let dec = decimalToString(game);
     let str = JSON.stringify(dec);
     localStorage.setItem("treegamesave", str);
 }
-
+// load the game
 function load() {
     let str = localStorage.getItem("treegamesave");
     if (str === null) return;
     let sav = stringToDecimal(JSON.parse(str));
+    // account for old versions
     if (sav.version == 1) {
         sav.version++
         sav.notation = 0
@@ -68,6 +71,7 @@ function load() {
         }
     }
     game = sav;
+    not = new ADNotations[notations[game.notation] + "Notation"]
     if (game.upgrades.includes(15)) document.querySelector("#x").style.display = "inline-block"
     if (game.upgrades.includes(26)) document.querySelector("#y").style.display = "inline-block"
     game.upgrades.forEach(upg => {
@@ -104,6 +108,8 @@ function resetGame() {
     localStorage.setItem("treegamesave", undefined)
     window.location.reload()
 }
+
+// no clue, ask stackoverflow
 
 function copyTextToClipboard(text) {
     var textArea = document.createElement("textarea");

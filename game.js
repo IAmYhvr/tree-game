@@ -11,6 +11,8 @@ var game = {
     version: 3
 }
 
+// i actually have no clue
+
 function ge(e) {
 	return document.getElementById(e) || document.createElement("div");
 }
@@ -41,19 +43,30 @@ function showTab(name) {
     resizeCanvas()
 }
 
+// set default notation
 var not = new ADNotations.ScientificNotation();
 
 var ata;
 var currentTab;
 
+// buy an upgrade
+
 function buybtn(id, cost, costCurr) {
+    // reject the purchase of the upgrade if you already have it
     if (game.upgrades.includes(id)) return;
+    // reject the purchase of the upgrade if it's too expensive
     if (cost.gt(game[costCurr].amount)) return;
+    // reject the purchase of the upgrade if it's parent is not purchased
     if (document.getElementById(id).classList.contains("btn-locked")) return;
+    // subtract cost from currency
     game[costCurr].amount = game[costCurr].amount.sub(cost)
+    // update classes
     document.getElementById(id).classList.remove("btn-unbought")
     document.getElementById(id).classList.add("btn-bought")
+    // store the fact that it's purchased
 	game.upgrades.push(id)
+    // tell it's children that it's been purchased
+    // wait no, that sounds wrong
     if (childList[id]) {
         childList[id].forEach(el => {
             document.getElementById(el).classList.remove("btn-locked")
@@ -61,6 +74,8 @@ function buybtn(id, cost, costCurr) {
         })
     }
 }
+
+// obtain a new currency, see previous func for some docs
 
 function buyCurrency(id, cost, costCurr, curr) {
 	if (game.upgrades.includes(id)) return;
@@ -81,11 +96,16 @@ function buyCurrency(id, cost, costCurr, curr) {
 }
 
 function update() {
+    // update currency display
 	document.querySelector("#x").textContent = "x: " + not.format(game.x.amount, 2, 0)
 	document.querySelector("#y").textContent = "y: " + not.format(game.y.amount, 2, 0)
 }
 
+// show intial tab so everything isn't on one screen
+
 showTab('upgrades')
+
+// give currencies
 
 window.setInterval(() => {
         // Brute force. Yipee!
@@ -118,6 +138,8 @@ window.setInterval(() => {
         update()
 }, 1000)
 
-let saveLoop = window.setInterval(() => {
+// save loop
+
+window.setInterval(() => {
     save()
 }, 10000)

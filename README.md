@@ -1,0 +1,3 @@
+# Tree Game [![CodeFactor](https://www.codefactor.io/repository/github/yhvrwastaken/tree-game/badge)](https://www.codefactor.io/repository/github/yhvrwastaken/tree-game)
+
+Tree game is a little web game that uses a "skill tree"-Esque way of progression. You passively get currency, and then you can use that currency on upgrades to get more currency passively. You can join the game's [Discord Server](discord.gg/rrUUUJn) here.
