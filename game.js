@@ -33,10 +33,19 @@ const childList = {
 	24: [14, 23],
   	25: [24],
     26: [35, 27],
+    27: [17],
+    33: [43],
+    34: [33],
     35: [45, 36],
-    36: [46],
+    36: [46, 37],
+    37: [47],
+    43: [53],
+    44: [34],
     45: [44],
-    46: [55]
+    46: [55],
+    53: [54],
+    55: [56],
+    56: [57]
 }
 
 function showTab(name) {
@@ -128,6 +137,7 @@ window.setInterval(() => {
             if (u.includes(23)) ata = ata.times(10)
             if (u.includes(36)) ata = ata.times(5)
             if (u.includes(46)) ata = ata.pow(2)
+            if (u.includes(17)) ata = ata.times(game.z.amount.pow(.1))
 		  
 			game.x.amount = game.x.amount.add(ata)
 		}
@@ -138,12 +148,22 @@ window.setInterval(() => {
 			if (u.includes(27)) ata = ata.times(5)
 			if (u.includes(45)) ata = ata.times(2)
             if (u.includes(44)) ata = ata.pow(2)
+            if (u.includes(17)) ata = ata.times(game.z.amount.pow(.1))
+            if (u.includes(56)) ata = ata.times(7)
 
 			game.y.amount = game.y.amount.add(ata)
 		}
 
         if (u.includes(55)) {
             ata = new Decimal(1)
+
+            if (u.includes(34)) ata = ata.add(3)
+            if (u.includes(33)) ata = ata.times(5)
+            if (u.includes(43)) ata = ata.pow(2)
+            if (u.includes(53)) ata = ata.pow(3)
+            if (u.includes(37)) ata = ata.times(5)
+            if (u.includes(47)) ata = ata.times(10)
+            if (u.includes(57)) ata = ata.times(2)
 
             game.z.amount = game.z.amount.add(ata)
         }

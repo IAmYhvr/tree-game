@@ -58,7 +58,7 @@ function save() {
 // load the game
 function load() {
     let str = localStorage.getItem("treegamesave");
-    if (str === undefined) return;
+    if (str === undefined || str === null) return;
     let sav = stringToDecimal(JSON.parse(str));
     // account for old versions
     if (sav.version == 1) {
@@ -81,6 +81,7 @@ function load() {
     not = new ADNotations[notations[game.notation] + "Notation"]
     if (game.upgrades.includes(15)) document.querySelector("#x").style.display = "inline-block"
     if (game.upgrades.includes(26)) document.querySelector("#y").style.display = "inline-block"
+    if (game.upgrades.includes(55)) document.querySelector("#z").style.display = "inline-block"
     game.upgrades.forEach(upg => {
         document.getElementById(upg).classList.remove("btn-unbought")
         document.getElementById(upg).classList.add("btn-bought")
