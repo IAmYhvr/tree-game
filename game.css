@@ -44,6 +44,10 @@ body {
     z-index: 999;
 }
 
+.btn-bought {
+    background-color: white;
+}
+
 .btn-unbought {
     background-color: lightgray;
 }
