@@ -48,6 +48,12 @@ const childList = {
     56: [57]
 }
 
+const upgradeInfo = {
+    13: ["Raise x to the power of 1.5.", 2e4, "x"],
+    14: ["Increase core production of x by 25.", 2500, "x"],
+    15: ["Begin production of x.", 0, "x"]
+}
+
 function showTab(name) {
 	gc("tab", function(e) {
 		e.style.display = "none";
@@ -111,9 +117,9 @@ function buyCurrency(id, cost, costCurr, curr) {
 
 function update() {
     // update currency display
-	document.querySelector("#x").textContent = "x: " + not.format(game.x.amount, 2, 0)
-	document.querySelector("#y").textContent = "y: " + not.format(game.y.amount, 2, 0)
-	document.querySelector("#z").textContent = "z: " + not.format(game.z.amount, 2, 0)
+	document.querySelector("#x").innerHTML = not.format(game.x.amount, 2, 0) + "&hairsp;x"
+	document.querySelector("#y").innerHTML = not.format(game.y.amount, 2, 0) + "&hairsp;y"
+	document.querySelector("#z").innerHTML = not.format(game.z.amount, 2, 0) + "&hairsp;z"
 }
 
 // show intial tab so everything isn't on one screen
