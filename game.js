@@ -48,12 +48,6 @@ const childList = {
     56: [57]
 }
 
-const upgradeInfo = {
-    13: ["Raise x to the power of 1.5.", 2e4, "x"],
-    14: ["Increase core production of x by 25.", 2500, "x"],
-    15: ["Begin production of x.", 0, "x"]
-}
-
 function showTab(name) {
 	gc("tab", function(e) {
 		e.style.display = "none";

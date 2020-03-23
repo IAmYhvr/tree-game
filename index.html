@@ -30,7 +30,7 @@
     <table class="table">
         <tr>
 			<td><button class="btn btn-locked" id="23" onclick="buybtn(23, new Decimal(1e6), 'x')">Multiply x by 10.<br>Cost: 1e6x</button></td>
-            <td><button class="btn btn-locked" id="24" onclick="buybtn(24, new Decimal(250), 'x')">Increase x production to x<sup>2</sup>.<br>Cost: 250x</button></td>
+            <td><button class="btn btn-locked" id="24" onclick="buybtn(24, new Decimal(250), 'x')">Square x production.<br>Cost: 250x</button></td>
             <td><button class="btn btn-locked" id="25" onclick="buybtn(25, new Decimal(5), 'x')">Increase x production by 5.<br>Cost: 5x</button></td>
 			<td><button class="btn btn-locked" id="26" onclick="buyCurrency(26, new Decimal(1e8), 'x', 'y')">Enter the era of y.<br>Cost: 1e8x</button></td>
 			<td><button class="btn btn-locked" id="27" onclick="buybtn(27, new Decimal(1e8), 'x')">Multiply y production by 5.<br>Cost: 1e8x</button></td>
@@ -79,7 +79,7 @@
     <script type="text/javascript" src="lzstring.js"></script>
 	<script type="text/javascript" src="render.js"></script>
 	<script type="text/javascript" src="options.js"></script>
-    <script type="text/javascript" src="game.js"></script>
-    <script>let x = window.setTimeout(()=>{resizeCanvas();window.clearTimeout(x)}, 250); if (localStorage.getItem("treegamesave") != null || localStorage.getItem("treegamesave") != undefined || localStorage.getItem("treegamesave") != "{}") load()</script>
+    <script type="text/javascript" src="game.js" onload='if (localStorage.getItem("treegamesave") != null || localStorage.getItem("treegamesave") != undefined || localStorage.getItem("treegamesave") != "{}") load()'></script>
+    <script>let x = window.setTimeout(()=>{resizeCanvas();window.clearTimeout(x)}, 250)</script>
 </body>
 </html>

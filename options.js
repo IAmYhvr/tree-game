@@ -15,6 +15,7 @@ function changeNotation() {
     if (game.notation == notations.length) game.notation = 0
     not = new ADNotations[notations[game.notation] + "Notation"]
     document.getElementById("notation").textContent = fancyNotations[game.notation] != null || fancyNotations[game.notation] != undefined ? fancyNotations[game.notation] : notations[game.notation]
+    updateUpgrades()
 }
 
 // Recursively convert "Decimal" to string
@@ -84,6 +85,7 @@ function load() {
     if (game.upgrades.includes(55)) document.querySelector("#z").style.display = "inline-block"
     document.getElementById("themecss").href = "themes/" + themes[game.theme] + ".css"
     document.getElementById("theme").textContent = themes[game.theme]
+    document.getElementById("notation").textContent = fancyNotations[game.notation] != null || fancyNotations[game.notation] != undefined ? fancyNotations[game.notation] : notations[game.notation]
     game.upgrades.forEach(upg => {
         document.getElementById(upg).classList.remove("btn-unbought")
         document.getElementById(upg).classList.add("btn-bought")
@@ -95,6 +97,8 @@ function load() {
             })
 	    }
     })
+    update()
+    updateUpgrades()
 }
 
 function exportGame() {
