@@ -59,7 +59,7 @@ function save() {
 // load the game
 function load() {
     let str = localStorage.getItem("treegamesave");
-    if (str === undefined || str === null) return;
+    if (str == undefined || str == "undefined" || str == null) return;
     let sav = stringToDecimal(JSON.parse(str));
     // account for old versions
     if (sav.version == 1) {

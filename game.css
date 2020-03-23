@@ -56,3 +56,7 @@ body {
 .btn-locked {
     background-color: gray;
 }
+
+.tabbtn {
+    height: 40px;
+}

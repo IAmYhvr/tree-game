@@ -111,8 +111,8 @@ function buyCurrency(id, cost, costCurr, curr) {
 
 function update() {
     // update currency display
-	document.querySelector("#x").innerHTML = not.format(game.x.amount, 2, 0) + "&hairsp;x"
-	document.querySelector("#y").innerHTML = not.format(game.y.amount, 2, 0) + "&hairsp;y"
+	document.querySelector("#x").innerHTML = not.format(game.x.amount, 2, 0) + "&hairsp;x" + (game.upgrades.includes(26) ? "," : "")
+	document.querySelector("#y").innerHTML = not.format(game.y.amount, 2, 0) + "&hairsp;y" + (game.upgrades.includes(55) ? "," : "")
 	document.querySelector("#z").innerHTML = not.format(game.z.amount, 2, 0) + "&hairsp;z"
 }
 
