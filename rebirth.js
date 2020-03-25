@@ -31,7 +31,7 @@ function calcRP() {
 // documentation somewhere around game.js:101
 function buyreb(id) {
     let ele = document.getElementById("r" + id)
-    let cost = rebirthUpgradeInfo[id][1]
+    let cost = new D(rebirthUpgradeInfo[id][1])
     if (game.rupgrades.includes(id)) return;
     if (cost.gt(game.rp.amount)) return;
     if (ele.classList.contains("btn-rebirth-locked")) return;
