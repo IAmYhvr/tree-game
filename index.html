@@ -2,18 +2,18 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tree Game</title>
 	<link type="text/css" rel="stylesheet" href="game.css">
 	<link id="themecss" type="text/css" rel="stylesheet" href="themes/light.css">
 </head>
-<body>
+<body class="dragscroll">
 	<div id="header">
-		<button class="btn tabbtn" id="upgrades" onclick="showTab('upgrades')">Upgrades</button>
+		<button class="btn tabbtn" id="upgrades" onclick="showTab('upgrades')">Upgrade Tree</button>
+		<button class="btn tabbtn" id="rebirth" onclick="showTab('rebirth')" style="display:none;">Rebirth Tree</button>
 		<button class="btn tabbtn" id="options" onclick="showTab('options')">Options</button>
-		<div id="currencies">
-			<span id="x">0&hairsp;x</span>
-			<span id="y">0&hairsp;y</span>
-			<span id="z">0&hairsp;z</span>
+        <div id="currencies">
+			<span id="x" style="display:inline-block">0&hairsp;x</span><span id="y">0&hairsp;y</span><span id="z">0&hairsp;z</span><span id="rp">0&hairsp;RP</span>
 		</div>
 	</div>
     
@@ -57,29 +57,79 @@
     <table class="table">
         <tr>
             <td><button class="btn btn-locked" id="53" onclick="buybtn(53, new Decimal(6.6e6), 'z')">Raise z production to the power of 3<br>Cost: 6.6e6z</button></td>
-            <td><button class="btn btn-locked" id="54" onclick="">Rebirth<br>???</button></td>
+            <td><button class="btn btn-locked" id="54" onclick="rebirth()">Rebirth<br>1e11&hairsp;z</button></td>
             <td><button class="btn btn-locked" id="55" onclick="buyCurrency(55, new Decimal(7.5e15), 'x', 'z')">Unlock z.<br>Cost: 7.5e15x</button></td>
             <td><button class="btn btn-locked" id="56" onclick="buybtn(56, new Decimal(5e4), 'y')">Multiply y production by 7.<br>Cost: 5e4y</button></td>
             <td><button class="btn btn-locked" id="57" onclick="buybtn(57, new Decimal(5e5), 'y')">Multiply z production by 2.<br>Cost: 5e5y</button></td>
         </tr>
     </table>
     <canvas id="tree-canvas"></canvas></span>
+    <span id="rebirthTab" class="tab"> <!-- Rebirth Tab -->
+        <table class="table">
+            <tr>
+                <td><button class="btn btn-rebirth-unbought" id="r11" onclick="buyreb(11, new Decimal(0))">Begin.<br>Cost: Free</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r12" onclick="buyreb(12, new Decimal(1))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r13" onclick="buyreb(13, new Decimal(1))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r14" onclick="buyreb(14, new Decimal(3))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r15" onclick="buyreb(15, new Decimal(2e222))">.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-rebirth-locked" id="r21" onclick="buyreb(21, new Decimal(10))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r22" onclick="buyreb(22, new Decimal(15))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r23" onclick="buyreb(23, new Decimal(9))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r24" onclick="buyreb(24, new Decimal(50))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r25" onclick="buyreb(25, new Decimal(2e222))">.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-rebirth-locked" id="r31" onclick="buyreb(31, new Decimal(10))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r32" onclick="buyreb(32, new Decimal(3.333e3))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r33" onclick="buyreb(33, new Decimal(1e3))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r34" onclick="buyreb(34, new Decimal(1.5e4))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r35" onclick="buyreb(35, new Decimal(2e222))">.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-rebirth-locked" id="r41" onclick="buyreb(41, new Decimal(10))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r42" onclick="buyreb(42, new Decimal(2.5e6))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r43" onclick="buyreb(43, new Decimal(2.5e6))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r44" onclick="buyreb(44, new Decimal(1e7))">.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r45" onclick="buyreb(45, new Decimal(2e222))">.</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r55" onclick="buyreb(55, new Decimal(2e222))">.</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r63" onclick="buyreb(63, new Decimal(1e13))">.</button></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r65" onclick="buyreb(65, new Decimal(2e222))">.</button></td>
+            </tr>
+        </table>
+    </span>
+    <canvas id="rebirth-canvas"></canvas></span>
 	<span id="optionsTab" class="tab"> <!-- Options Tab-->
         <button class="btn" onclick="changeTheme()">Change Theme<br>Currently <span id="theme">light</span>.</button>
         <button class="btn" onclick="changeNotation()">Change Notation<br>Currently <span id="notation">Scientific</span>.</button>
         <button class="btn" onclick="save()">Save Game</button>
         <button class="btn" onclick="resetGame()">Reset Game</button><br>
         <button class="btn" onclick="exportGame()">Export Game</button>
-        <button class="btn" onclick="importGame()">Import Game (WIP)</button>
-		<p id="amounts">Idea & a bit of code from <a href="https://ivark.github.io">Antimatter Dimensions</a>. Also using <a href="https://github.com/antimatter-dimensions/notations">notations</a> and <a href="https://github.com/pieroxy/lz-string">LZString</a>. Why don't you join the  <a href="https://discord.gg/rrUUUJn">Discord Server</a>?</p>
+        <button class="btn" onclick="importGame()">Import Game</button>
+		<p id="amounts">Idea & a bit of code from <a href="https://ivark.github.io">Antimatter Dimensions</a>. Also using <a href="https://github.com/antimatter-dimensions/notations">notations</a>, <a href="https://github.com/pieroxy/lz-string">LZString</a>, and <a href="https://github.com/asvd/dragscroll">Dragscroll</a>. Why don't you join the  <a href="https://discord.gg/rrUUUJn">Discord Server</a>?</p>
 	</span>
   
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/break_infinity.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@antimatter-dimensions/notations"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/dragscroll@0.0.8/dragscroll.min.js"></script>
+    <script type="text/javascript">const D=Decimal;</script>
     <script type="text/javascript" src="lzstring.js"></script>
 	<script type="text/javascript" src="render.js"></script>
-	<script type="text/javascript" src="options.js"></script>
+    <script type="text/javascript" src="options.js"></script>
+    <script type="text/javascript" src="rebirth.js"></script>
     <script type="text/javascript" src="game.js" onload='if (localStorage.getItem("treegamesave") != null || localStorage.getItem("treegamesave") != undefined || localStorage.getItem("treegamesave") != "{}") load()'></script>
-    <script>let x = window.setTimeout(()=>{resizeCanvas();window.clearTimeout(x)}, 250)</script>
+    <script>let x = window.setTimeout(()=>{resizeCanvas();resizeRebirthCanvas();window.clearTimeout(x)}, 250);</script>
 </body>
 </html>

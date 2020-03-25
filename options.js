@@ -16,13 +16,14 @@ function changeNotation() {
     not = new ADNotations[notations[game.notation] + "Notation"]
     document.getElementById("notation").textContent = fancyNotations[game.notation] != null || fancyNotations[game.notation] != undefined ? fancyNotations[game.notation] : notations[game.notation]
     updateUpgrades()
+    updateRebirthUpgrades()
 }
 
 // Recursively convert "Decimal" to string
 function decimalToString(obj) {
     let ret = {};
     for (const key in obj) {
-        if (obj[key] instanceof Decimal) {
+        if (obj[key] instanceof D) {
             ret[key] = obj[key].toString()
         } else if (obj[key] instanceof Array) {
             ret[key] = obj[key]
@@ -39,7 +40,7 @@ function stringToDecimal(obj) {
     let ret = {};
     for (const key in obj) {
         if (typeof obj[key] == "string") {
-            ret[key] = new Decimal(obj[key])
+            ret[key] = new D(obj[key])
         } else if (obj[key] instanceof Array) {
             ret[key] = obj[key]
         } else if (obj[key] instanceof Object) {
@@ -75,14 +76,24 @@ function load() {
     if (sav.version == 3) {
         sav.version++
         sav.z = {
-            amount: new Decimal(0)
+            amount: new D(0)
         }
+    }
+    if (sav.version == 4) {
+        sav.version++
+        sav.rupgrades = []
+        sav.rp = {
+            amount: new D(0)
+        }
+        sav.rebirthed = false
+        sav.lastTick = Date.now()
     }
     game = sav;
     not = new ADNotations[notations[game.notation] + "Notation"]
     if (game.upgrades.includes(15)) document.querySelector("#x").style.display = "inline-block"
     if (game.upgrades.includes(26)) document.querySelector("#y").style.display = "inline-block"
     if (game.upgrades.includes(55)) document.querySelector("#z").style.display = "inline-block"
+    if (game.rebirthed) document.querySelector("#rp").style.display = "inline-block", document.querySelector("#rebirth").style.display = "inline-block";
     document.getElementById("themecss").href = "themes/" + themes[game.theme] + ".css"
     document.getElementById("theme").textContent = themes[game.theme]
     document.getElementById("notation").textContent = fancyNotations[game.notation] != null || fancyNotations[game.notation] != undefined ? fancyNotations[game.notation] : notations[game.notation]
@@ -97,8 +108,22 @@ function load() {
             })
 	    }
     })
+
+    game.rupgrades.forEach(upg => {
+        document.getElementById("r"+upg).classList.remove("btn-rebirth-unbought")
+        document.getElementById("r"+upg).classList.add("btn-rebirth-bought")
+
+        if (rebirthChildList[upg]) {
+            rebirthChildList[upg].forEach(el => {
+                document.getElementById("r"+el).classList.remove("btn-rebirth-locked")
+                document.getElementById("r"+el).classList.add("btn-rebirth-unbought")
+            })
+	    }
+    })
+    
     update()
     updateUpgrades()
+    updateRebirthUpgrades()
 }
 
 function exportGame() {
@@ -142,11 +167,10 @@ function copyTextToClipboard(text) {
     textArea.focus();
     textArea.select();
     try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Copying text command was ' + msg);
+        var successful = document.execCommand('copy');
+        if (!successful) prompt("Unable to auto-copy.", text)
     } catch (err) {
-      console.log('Oops, unable to copy');
+      prompt("Unable to auto-copy.", text)
     }
     document.body.removeChild(textArea);
 }

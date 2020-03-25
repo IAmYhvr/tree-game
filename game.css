@@ -10,7 +10,7 @@ body {
     width: auto;
 }
 
-#tree-canvas {
+#tree-canvas, #rebirth-canvas {
     top: 0;
     bottom: 0;
     left: 0;
@@ -29,7 +29,12 @@ body {
 
 .table {
     display: flex !important;
-    justify-content: center;
+}
+
+@media (min-width: 955px) {
+    .table {
+        justify-content: center;
+    }
 }
 
 .btn {
@@ -55,6 +60,18 @@ body {
 
 .btn-locked {
     background-color: gray;
+}
+
+.btn-rebirth-bought {
+    background-color: rgb(255, 0, 255);
+}
+
+.btn-rebirth-unbought {
+    background-color: rgb(191, 0, 191);
+}
+
+.btn-rebirth-locked {
+    background-color: rgb(151, 0, 151);
 }
 
 .tabbtn {

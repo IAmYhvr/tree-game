@@ -1,18 +1,26 @@
-var game = {
+const defaultGame = {
     x: {
-        amount: new Decimal(0)
+        amount: new D(0)
     },
     y: {
-        amount: new Decimal(0)
+        amount: new D(0)
     },
     z: {
-        amount: new Decimal(0)
+        amount: new D(0)
+    },
+    rp: {
+        amount: new D(0)
     },
     upgrades: [],
+    rupgrades: [],
     theme: 0,
     notation: 0,
-    version: 4
+    rebirthed: false,
+    lastTick: Date.now(),
+    version: 5
 }
+
+game = defaultGame
 
 // i actually have no clue
 
@@ -48,6 +56,30 @@ const childList = {
     56: [57]
 }
 
+const rebirthChildList = {
+    11: [12, 21],
+    12: [13, 22],
+    13: [14, 23],
+    14: [15, 24],
+    15: [25],
+    21: [31],
+    22: [32],
+    23: [33],
+    24: [34],
+    25: [35],
+    31: [41],
+    32: [42],
+    33: [43],
+    34: [44],
+    35: [45],
+    41: [63],
+    42: [63],
+    43: [63],
+    44: [63],
+    45: [55],
+    55: [65]
+}
+
 function showTab(name) {
 	gc("tab", function(e) {
 		e.style.display = "none";
@@ -55,6 +87,7 @@ function showTab(name) {
 	ge(name + "Tab").style.display = "";
     currentTab = name;
     resizeCanvas()
+    resizeRebirthCanvas()
 }
 
 // set default notation
@@ -111,9 +144,10 @@ function buyCurrency(id, cost, costCurr, curr) {
 
 function update() {
     // update currency display
-	document.querySelector("#x").innerHTML = not.format(game.x.amount, 2, 0) + "&hairsp;x" + (game.upgrades.includes(26) ? "," : "")
-	document.querySelector("#y").innerHTML = not.format(game.y.amount, 2, 0) + "&hairsp;y" + (game.upgrades.includes(55) ? "," : "")
-	document.querySelector("#z").innerHTML = not.format(game.z.amount, 2, 0) + "&hairsp;z"
+	document.querySelector("#x").innerHTML = not.format(game.x.amount, 2, 0) + "&hairsp;x"
+	document.querySelector("#y").innerHTML = ", " + not.format(game.y.amount, 2, 0) + "&hairsp;y"
+	document.querySelector("#z").innerHTML = ", " + not.format(game.z.amount, 2, 0) + "&hairsp;z"
+    document.querySelector("#rp").innerHTML= ", " + not.format(game.rp.amount,2, 0) + "&hairsp;RP"
 }
 
 // show intial tab so everything isn't on one screen
@@ -124,9 +158,12 @@ showTab('upgrades')
 
 window.setInterval(() => {
         // Brute force. Yipee!
-        var u = game.upgrades
+        let diff = Date.now() - game.lastTick
+        game.lastTick = Date.now()
+        let u = game.upgrades
+        let r = game.rupgrades
         if (u.includes(15)) {
-            ata = new Decimal(1)
+            ata = new D(1)
 
             if (u.includes(25)) ata = ata.add(5)
             if (u.includes(16)) ata = ata.add(10)
@@ -138,12 +175,18 @@ window.setInterval(() => {
             if (u.includes(36)) ata = ata.times(5)
             if (u.includes(46)) ata = ata.pow(2)
             if (u.includes(17)) ata = ata.times(game.z.amount.pow(.1))
+
+            if (r.includes(12)) ata = ata.times(4)
+            if (r.includes(14)) ata = ata.times(D.max(1, game.rp.amount))
+            if (r.includes(22)) ata = ata.pow(2)
+            if (r.includes(32)) ata = ata.pow(3)
+            if (r.includes(42)) ata = ata.pow(5)
 		  
-			game.x.amount = game.x.amount.add(ata)
+			game.x.amount = game.x.amount.add(ata.times(diff / 1000))
 		}
 		
 		if (u.includes(26)) {
-			ata = new Decimal(1)
+			ata = new D(1)
 
 			if (u.includes(27)) ata = ata.times(5)
 			if (u.includes(45)) ata = ata.times(2)
@@ -151,11 +194,17 @@ window.setInterval(() => {
             if (u.includes(17)) ata = ata.times(game.z.amount.pow(.1))
             if (u.includes(56)) ata = ata.times(7)
 
-			game.y.amount = game.y.amount.add(ata)
+            if (r.includes(12)) ata = ata.times(4)
+            if (r.includes(14)) ata = ata.times(D.max(1, game.rp.amount))
+            if (r.includes(22)) ata = ata.pow(2)
+            if (r.includes(32)) ata = ata.pow(3)
+            if (r.includes(42)) ata = ata.pow(5)
+
+			game.y.amount = game.y.amount.add(ata.times(diff / 1000))
 		}
 
         if (u.includes(55)) {
-            ata = new Decimal(1)
+            ata = new D(1)
 
             if (u.includes(34)) ata = ata.add(3)
             if (u.includes(33)) ata = ata.times(5)
@@ -165,11 +214,58 @@ window.setInterval(() => {
             if (u.includes(47)) ata = ata.times(10)
             if (u.includes(57)) ata = ata.times(2)
 
-            game.z.amount = game.z.amount.add(ata)
+            if (r.includes(12)) ata = ata.times(4)
+            if (r.includes(14)) ata = ata.times(D.max(1, game.rp.amount))
+            if (r.includes(22)) ata = ata.pow(2)
+            if (r.includes(32)) ata = ata.pow(3)
+            if (r.includes(42)) ata = ata.pow(5)
+
+            game.z.amount = game.z.amount.add(ata.times(diff / 1000))
+        }
+
+        // autobuy x
+        if (r.includes(13)) {
+            buybtn(13, new Decimal(2e4), 'x')
+            buybtn(14, new Decimal(2500), 'x')
+            buybtn(15, new D(0), 'x')
+            buybtn(16, new Decimal(100), 'x')
+            buybtn(23, new Decimal(1e6), 'x')
+            buybtn(24, new Decimal(250), 'x')
+            buybtn(25, new Decimal(5), 'x')
+            buyCurrency(26, new Decimal(1e8), 'x', 'y')
+            buybtn(27, new Decimal(1e8), 'x')
+            buybtn(44, new Decimal(1e9), 'x')
+            buybtn(47, new Decimal(5e17), 'x')
+            buyCurrency(55, new Decimal(7.5e15), 'x', 'z')
+        }
+
+        // autobuy y
+        if (r.includes(23)) {
+            buybtn(35, new Decimal(10), 'y')
+            buybtn(36, new Decimal(250), 'y')
+            buybtn(37, new Decimal(1e5), 'y')
+            buybtn(45, new Decimal(100), 'y')
+            buybtn(46, new Decimal(5e3), 'y')
+            buybtn(56, new Decimal(5e4), 'y')
+            buybtn(57, new Decimal(5e5), 'y')
+        }
+
+        // autobuy z
+        if (r.includes(33)) {
+            buybtn(17, new Decimal(1e3), 'z')
+            buybtn(33, new Decimal(400), 'z')
+            buybtn(34, new Decimal(15), 'z')
+            buybtn(43, new Decimal(1e3), 'z')
+            buybtn(53, new Decimal(6.6e6), 'z')
+        }
+
+        // 10% gain
+        if (r.includes(43)) {
+            game.rp.amount = game.rp.amount.add(calcRP().div(10).times(diff / 1000))
         }
 
         update()
-}, 1000)
+}, 100)
 
 // save loop
 
