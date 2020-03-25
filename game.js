@@ -91,6 +91,7 @@ function showTab(name) {
 }
 
 // set default notation
+
 var not = new ADNotations.ScientificNotation();
 
 var ata;
@@ -98,18 +99,22 @@ var currentTab;
 
 // buy an upgrade
 
-function buybtn(id, cost, costCurr) {
+function buybtn(ele) {
+    if (typeof ele == "number") ele = document.getElementById(ele)
+    let id = Number(ele.id)
+    let cost = new D(upgradeInfo[id][1])
+    let costCurr = upgradeInfo[id][2]
     // reject the purchase of the upgrade if you already have it
     if (game.upgrades.includes(id)) return;
     // reject the purchase of the upgrade if it's too expensive
     if (cost.gt(game[costCurr].amount)) return;
     // reject the purchase of the upgrade if it's parent is not purchased
-    if (document.getElementById(id).classList.contains("btn-locked")) return;
+    if (ele.classList.contains("btn-locked")) return;
     // subtract cost from currency
     game[costCurr].amount = game[costCurr].amount.sub(cost)
     // update classes
-    document.getElementById(id).classList.remove("btn-unbought")
-    document.getElementById(id).classList.add("btn-bought")
+    ele.classList.remove("btn-unbought")
+    ele.classList.add("btn-bought")
     // store the fact that it's purchased
 	game.upgrades.push(id)
     // tell it's children that it's been purchased
@@ -124,13 +129,17 @@ function buybtn(id, cost, costCurr) {
 
 // obtain a new currency, see previous func for some docs
 
-function buyCurrency(id, cost, costCurr, curr) {
+function buyCurrency(ele, curr) {
+    if (typeof ele == "number") ele = document.getElementById(ele)
+    let id = Number(ele.id)
+    let cost = new D(upgradeInfo[id][1])
+    let costCurr = upgradeInfo[id][2]
 	if (game.upgrades.includes(id)) return;
     if (cost.gt(game[costCurr].amount)) return;
-    if (document.getElementById(id).classList.contains("btn-locked")) return;
+    if (ele.classList.contains("btn-locked")) return;
     game[costCurr].amount = game[costCurr].amount.sub(cost)
-    document.getElementById(id).classList.remove("btn-unbought")
-    document.getElementById(id).classList.add("btn-bought")
+    ele.classList.remove("btn-unbought")
+    ele.classList.add("btn-bought")
 	game.upgrades.push(id)
 	document.querySelector("#" + curr).style.display = "inline-block"
     if (childList[id]) {
@@ -148,6 +157,7 @@ function update() {
 	document.querySelector("#y").innerHTML = ", " + not.format(game.y.amount, 2, 0) + "&hairsp;y"
 	document.querySelector("#z").innerHTML = ", " + not.format(game.z.amount, 2, 0) + "&hairsp;z"
     document.querySelector("#rp").innerHTML= ", " + not.format(game.rp.amount,2, 0) + "&hairsp;RP"
+    document.getElementById(54).innerHTML  ="Rebirth.<br>Cost: "+not.format(1e11,2,0)+"&hairsp;z<br>For "+(calcRP().exponent == 4500000000000000 ? not.format(0,2,0) : not.format(calcRP(),2,0))+"&hairsp;RP"
 }
 
 // show intial tab so everything isn't on one screen
@@ -225,38 +235,38 @@ window.setInterval(() => {
 
         // autobuy x
         if (r.includes(13)) {
-            buybtn(13, new Decimal(2e4), 'x')
-            buybtn(14, new Decimal(2500), 'x')
-            buybtn(15, new D(0), 'x')
-            buybtn(16, new Decimal(100), 'x')
-            buybtn(23, new Decimal(1e6), 'x')
-            buybtn(24, new Decimal(250), 'x')
-            buybtn(25, new Decimal(5), 'x')
-            buyCurrency(26, new Decimal(1e8), 'x', 'y')
-            buybtn(27, new Decimal(1e8), 'x')
-            buybtn(44, new Decimal(1e9), 'x')
-            buybtn(47, new Decimal(5e17), 'x')
-            buyCurrency(55, new Decimal(7.5e15), 'x', 'z')
+            buybtn(13)
+            buybtn(14)
+            buybtn(15)
+            buybtn(16)
+            buybtn(23)
+            buybtn(24)
+            buybtn(25)
+            buyCurrency(26, 'y')
+            buybtn(27)
+            buybtn(44)
+            buybtn(47)
+            buyCurrency(55, 'z')
         }
 
         // autobuy y
         if (r.includes(23)) {
-            buybtn(35, new Decimal(10), 'y')
-            buybtn(36, new Decimal(250), 'y')
-            buybtn(37, new Decimal(1e5), 'y')
-            buybtn(45, new Decimal(100), 'y')
-            buybtn(46, new Decimal(5e3), 'y')
-            buybtn(56, new Decimal(5e4), 'y')
-            buybtn(57, new Decimal(5e5), 'y')
+            buybtn(35)
+            buybtn(36)
+            buybtn(37)
+            buybtn(45)
+            buybtn(46)
+            buybtn(56)
+            buybtn(57)
         }
 
         // autobuy z
         if (r.includes(33)) {
-            buybtn(17, new Decimal(1e3), 'z')
-            buybtn(33, new Decimal(400), 'z')
-            buybtn(34, new Decimal(15), 'z')
-            buybtn(43, new Decimal(1e3), 'z')
-            buybtn(53, new Decimal(6.6e6), 'z')
+            buybtn(17)
+            buybtn(33)
+            buybtn(34)
+            buybtn(43)
+            buybtn(53)
         }
 
         // 10% gain

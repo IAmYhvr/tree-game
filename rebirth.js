@@ -20,6 +20,7 @@ function rebirth() {
         game.rebirthed = true
         document.querySelector("#rp").style.display = "inline-block"
         document.querySelector("#rebirth").style.display = "inline-block"
+        updateRebirthUpgrades()
     }
 }
 
@@ -27,19 +28,22 @@ function calcRP() {
     return new Decimal(game.z.amount.div(1e10).log10()).pow(1/2).floor().times(game.rupgrades.includes(24) ? 100 : 1).times(game.rupgrades.includes(34) ? 100 : 1).times(game.rupgrades.includes(44) ? 1e5 : 1)
 }
 
-// documentation @ game.js:83
-function buyreb(id, cost) {
+// documentation somewhere around game.js:101
+function buyreb(id) {
+    let ele = document.getElementById("r" + id)
+    let cost = rebirthUpgradeInfo[id][1]
     if (game.rupgrades.includes(id)) return;
     if (cost.gt(game.rp.amount)) return;
-    if (document.getElementById("r"+id).classList.contains("btn-rebirth-locked")) return;
+    if (ele.classList.contains("btn-rebirth-locked")) return;
     game.rp.amount = game.rp.amount.sub(cost)
-    document.getElementById("r"+id).classList.remove("btn-rebirth-unbought")
-    document.getElementById("r"+id).classList.add("btn-rebirth-bought")
+    ele.classList.remove("btn-rebirth-unbought")
+    ele.classList.add("btn-rebirth-bought")
 	game.rupgrades.push(id)
     if (rebirthChildList[id]) {
-        rebirthChildList[id].forEach(el => {
-            document.getElementById("r"+el).classList.remove("btn-rebirth-locked")
-            document.getElementById("r"+el).classList.add("btn-rebirth-unbought")
+        rebirthChildList[id].forEach(id2 => {
+            let ele2 = document.getElementById("r" + el)
+            ele2.classList.remove("btn-rebirth-locked")
+            ele2.classList.add("btn-rebirth-unbought")
         })
     }
 }
