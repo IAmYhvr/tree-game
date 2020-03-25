@@ -41,7 +41,7 @@ function buyreb(id) {
 	game.rupgrades.push(id)
     if (rebirthChildList[id]) {
         rebirthChildList[id].forEach(id2 => {
-            let ele2 = document.getElementById("r" + el)
+            let ele2 = document.getElementById("r" + id2)
             ele2.classList.remove("btn-rebirth-locked")
             ele2.classList.add("btn-rebirth-unbought")
         })
