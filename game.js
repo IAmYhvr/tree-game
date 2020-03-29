@@ -13,14 +13,84 @@ const defaultGame = {
     },
     upgrades: [],
     rupgrades: [],
+    choice: {
+        depth: 0,
+        choices: []
+    },
     theme: 0,
     notation: 0,
     rebirthed: false,
     lastTick: Date.now(),
-    version: 5
+    version: 6
 }
 
 game = defaultGame
+
+var prodInfo = {x: new D(0), y: new D(0), z: new D(0)}
+
+function recalcProd() {
+    let u = game.upgrades
+    let r = game.rupgrades
+    let c = game.choice.choices
+    prodInfo = {x: new D(0), y: new D(0), z: new D(0)}
+
+    if (u.includes(15)) {
+        let ata = new D(1)
+
+        if (u.includes(14)) ata = ata.add(25)
+        if (u.includes(16)) ata = ata.add(10)
+        if (u.includes(13)) ata = ata.pow(1.5)
+        if (u.includes(23)) ata = ata.times(10)
+        if (u.includes(24)) ata = ata.pow(2)
+        if (u.includes(25)) ata = ata.add(5)
+        if (u.includes(36)) ata = ata.times(5)
+        if (u.includes(46)) ata = ata.pow(2)
+
+        if (r.includes(12)) ata = ata.times(4)
+        if (r.includes(22)) ata = ata.pow(2)
+        if (r.includes(32)) ata = ata.pow(3)
+        if (r.includes(42)) ata = ata.pow(5)
+
+        prodInfo.x = ata
+    }
+
+    if (u.includes(26)) {
+        let ata = new D(1)
+
+        if (u.includes(27)) ata = ata.times(5)
+        if (u.includes(44)) ata = ata.pow(2)
+	    if (u.includes(45)) ata = ata.times(2)
+        if (u.includes(56)) ata = ata.times(7)
+
+        if (r.includes(12)) ata = ata.times(4)
+        if (r.includes(22)) ata = ata.pow(2)
+        if (r.includes(32)) ata = ata.pow(3)
+        if (r.includes(42)) ata = ata.pow(5)
+
+        prodInfo.y = ata
+    }
+
+    if (u.includes(55)) {
+        let ata = new D(1)
+
+        if (u.includes(34)) ata = ata.add(3)
+        if (u.includes(33)) ata = ata.times(5)
+        if (u.includes(37)) ata = ata.times(5)
+        if (u.includes(43)) ata = ata.pow(2)
+        if (u.includes(47)) ata = ata.times(10)
+        if (u.includes(53)) ata = ata.pow(3)
+        if (u.includes(57)) ata = ata.times(2)
+
+        if (r.includes(12)) ata = ata.times(4)
+        if (r.includes(22)) ata = ata.pow(2)
+        if (r.includes(32)) ata = ata.pow(3)
+        if (r.includes(42)) ata = ata.pow(5)
+
+        if (c[0] == 3) ata = ata.times(1e308)
+
+        prodInfo.z = ata
+    }
+}
 
 // i actually have no clue
 
@@ -77,7 +147,17 @@ const rebirthChildList = {
     43: [63],
     44: [63],
     45: [55],
-    55: [65]
+    55: [65],
+    63: ["c11", "c12", "c13"],
+    65: [75],
+    75: [85],
+    85: [95],
+    95: [105],
+    105: [115],
+    115: [125],
+    125: [135],
+    135: [145],
+    145: [155],
 }
 
 function showTab(name) {
@@ -125,6 +205,7 @@ function buybtn(ele) {
             document.getElementById(el).classList.add("btn-unbought")
         })
     }
+    recalcProd()
 }
 
 // obtain a new currency, see previous func for some docs
@@ -149,6 +230,7 @@ function buyCurrency(ele, curr) {
         })
 	}
 	resizeCanvas()
+    recalcProd()
 }
 
 function update() {
@@ -172,76 +254,53 @@ window.setInterval(() => {
         game.lastTick = Date.now()
         let u = game.upgrades
         let r = game.rupgrades
+        let c = game.choice.choices
         if (u.includes(15)) {
-            ata = new D(1)
+            ata = new D(prodInfo.x)
 
-            if (u.includes(25)) ata = ata.add(5)
-            if (u.includes(16)) ata = ata.add(10)
-            if (u.includes(14)) ata = ata.add(25)
-            if (u.includes(24)) ata = ata.pow(2)
-            if (u.includes(13)) ata = ata.pow(1.5)
-			if (u.includes(35)) ata = ata.times(game.y.amount.pow(1/6))
-            if (u.includes(23)) ata = ata.times(10)
-            if (u.includes(36)) ata = ata.times(5)
-            if (u.includes(46)) ata = ata.pow(2)
             if (u.includes(17)) ata = ata.times(game.z.amount.pow(.1))
+			if (u.includes(35)) ata = ata.times(game.y.amount.pow(1/6))
 
-            if (r.includes(12)) ata = ata.times(4)
             if (r.includes(14)) ata = ata.times(D.max(1, game.rp.amount))
-            if (r.includes(22)) ata = ata.pow(2)
-            if (r.includes(32)) ata = ata.pow(3)
-            if (r.includes(42)) ata = ata.pow(5)
+
+            if (c[2] == 2) ata = ata.times(game.rp.amount.pow(25))
 		  
 			game.x.amount = game.x.amount.add(ata.times(diff / 1000))
 		}
 		
 		if (u.includes(26)) {
-			ata = new D(1)
+			ata = new D(prodInfo.y)
 
-			if (u.includes(27)) ata = ata.times(5)
-			if (u.includes(45)) ata = ata.times(2)
-            if (u.includes(44)) ata = ata.pow(2)
             if (u.includes(17)) ata = ata.times(game.z.amount.pow(.1))
-            if (u.includes(56)) ata = ata.times(7)
 
-            if (r.includes(12)) ata = ata.times(4)
             if (r.includes(14)) ata = ata.times(D.max(1, game.rp.amount))
-            if (r.includes(22)) ata = ata.pow(2)
-            if (r.includes(32)) ata = ata.pow(3)
-            if (r.includes(42)) ata = ata.pow(5)
+
+            if (c[2] == 2) ata = ata.times(game.rp.amount.pow(25))
 
 			game.y.amount = game.y.amount.add(ata.times(diff / 1000))
 		}
 
         if (u.includes(55)) {
-            ata = new D(1)
+            ata = new D(prodInfo.z)
 
-            if (u.includes(34)) ata = ata.add(3)
-            if (u.includes(33)) ata = ata.times(5)
-            if (u.includes(43)) ata = ata.pow(2)
-            if (u.includes(53)) ata = ata.pow(3)
-            if (u.includes(37)) ata = ata.times(5)
-            if (u.includes(47)) ata = ata.times(10)
-            if (u.includes(57)) ata = ata.times(2)
-
-            if (r.includes(12)) ata = ata.times(4)
             if (r.includes(14)) ata = ata.times(D.max(1, game.rp.amount))
-            if (r.includes(22)) ata = ata.pow(2)
-            if (r.includes(32)) ata = ata.pow(3)
-            if (r.includes(42)) ata = ata.pow(5)
+
+            if (c[2] == 1) ata = ata.pow(new D(game.x.amount.log10()).log10())
+            if (c[2] == 2) ata = ata.times(game.rp.amount.pow(25))
+            if (c[2] == 3) ata = ata.pow(new D(game.y.amount.log10()).log(8))
 
             game.z.amount = game.z.amount.add(ata.times(diff / 1000))
         }
 
         // autobuy x
         if (r.includes(13)) {
-            buybtn(13)
-            buybtn(14)
             buybtn(15)
             buybtn(16)
-            buybtn(23)
-            buybtn(24)
             buybtn(25)
+            buybtn(24)
+            buybtn(14)
+            buybtn(13)
+            buybtn(23)
             buyCurrency(26, 'y')
             buybtn(27)
             buybtn(44)
@@ -269,9 +328,9 @@ window.setInterval(() => {
             buybtn(53)
         }
 
-        // 10% gain
+        // 1% gain
         if (r.includes(43)) {
-            game.rp.amount = game.rp.amount.add(calcRP().div(10).times(diff / 1000))
+            game.rp.amount = game.rp.amount.add(calcRP().div(100).times(diff / 1000))
         }
 
         update()
@@ -282,3 +341,8 @@ window.setInterval(() => {
 window.setInterval(() => {
     save()
 }, 10000)
+
+/* Only register a service worker if it's supported */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/tree-game/service-worker.js');
+}

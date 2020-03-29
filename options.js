@@ -1,5 +1,5 @@
 // create datasets
-var themes = ["light", "dark"]
+var themes = ["Light", "Dark", "Auto"]
 var notations = ["Scientific", "Engineering", "MixedScientific", "MixedEngineering", "Logarithm", "Letters", "Standard", "Dots", "Clock", "Blind"]
 var fancyNotations = [undefined, undefined, "Mixed Scientific", "Mixed Engineering"]
 
@@ -87,6 +87,20 @@ function load() {
         }
         sav.rebirthed = false
         sav.lastTick = Date.now()
+    } if (sav.version == 5) {
+        sav.version++
+        sav.choice = {
+            depth: 0,
+            choices: []
+        }
+        sav.x.amount = new D(0)
+        sav.y.amount = new D(0)
+        sav.z.amount = new D(0)
+        alert("!!UPDATE NOTICE!!\nAmounts of x, y, and z have been reset due to a re-ordering of the way upgrades are applied in. The numbers will be lower.")
+        if (sav.rp.amount.gt(3e12)) {
+            sav.rp.amount = new D(3e12)
+            alert("!!UPDATE NOTICE!!\nBecause your amount of RP succeeded 3e12, it will be harcapped at that. You probably would have beaten all the new content there is if you had started with any more!")
+        }
     }
     game = sav;
     not = new ADNotations[notations[game.notation] + "Notation"]
@@ -115,15 +129,63 @@ function load() {
 
         if (rebirthChildList[upg]) {
             rebirthChildList[upg].forEach(el => {
+                if ((el + "").startsWith("c")) return;
                 document.getElementById("r"+el).classList.remove("btn-rebirth-locked")
                 document.getElementById("r"+el).classList.add("btn-rebirth-unbought")
             })
 	    }
+
+        if (game.rupgrades.includes(63)) {
+            document.getElementById("c11").classList.remove("btn-cleft-locked")
+            document.getElementById("c11").classList.add("btn-cleft-unbought")
+            document.getElementById("c12").classList.remove("btn-cmid-locked")
+            document.getElementById("c12").classList.add("btn-cmid-unbought")
+            document.getElementById("c13").classList.remove("btn-cright-locked")
+            document.getElementById("c13").classList.add("btn-cright-unbought")
+        }
     })
+
+    //choice stuff
+    let sides = [undefined, "left", "mid", "right"]
+    for (let i = 1; i < game.choice.depth + 1; i++) {
+        if (choiceCosts[i - 1].eq(0)) {
+            document.getElementById("c" + i + "2").classList.remove("btn-creg-locked")
+            document.getElementById("c" + i + "2").classList.add("btn-creg-bought")
+        } else {
+            let c = game.choice.choices[Math.floor(i / 2)]
+            document.getElementById("c" + i + c).classList.remove(`btn-c${sides[c]}-locked`)
+            document.getElementById("c" + i + c).classList.remove(`btn-c${sides[c]}-unbought`)
+            document.getElementById("c" + i + c).classList.add(`btn-c${sides[c]}-bought`)
+            if (c != 1) document.getElementById("c" + i + 1).classList.remove("btn-cleft-unbought"),  document.getElementById("c" + i + 1).classList.add("btn-cleft-locked")
+            if (c != 2) document.getElementById("c" + i + 2).classList.remove("btn-cmid-unbought"),   document.getElementById("c" + i + 2).classList.add("btn-cmid-locked")
+            if (c != 3) document.getElementById("c" + i + 3).classList.remove("btn-cright-unbought"), document.getElementById("c" + i + 3).classList.add("btn-cright-locked")
+        }
+    }
+
+    // still choice stuff
+    if (choiceCosts[game.choice.depth].eq(0)) {
+        document.getElementById("c" + (game.choice.depth + 1) + 2).classList.remove("btn-creg-locked")
+        document.getElementById("c" + (game.choice.depth + 1) + 2).classList.add("btn-creg-unbought")
+    } else if (game.choice.depth != 0) {
+        document.getElementById("c" + (game.choice.depth + 1) + 1).classList.remove("btn-cleft-locked")
+        document.getElementById("c" + (game.choice.depth + 1) + 1).classList.add("btn-cleft-unbought")
+        document.getElementById("c" + (game.choice.depth + 1) + 2).classList.remove("btn-cmid-locked")
+        document.getElementById("c" + (game.choice.depth + 1) + 2).classList.add("btn-cmid-unbought")
+        document.getElementById("c" + (game.choice.depth + 1) + 3).classList.remove("btn-cright-locked")
+        document.getElementById("c" + (game.choice.depth + 1) + 3).classList.add("btn-cright-unbought")
+    }
     
+    if (game.choice.depth > 0) {
+        let fc = game.choice.choices[0]
+        if (fc != 1) document.getElementById("c11").classList.remove("btn-cleft-unbought"), document.getElementById("c11").classList.add("btn-cleft-locked")
+        if (fc != 2) document.getElementById("c12").classList.remove("btn-cmid-unbought"), document.getElementById("c12").classList.add("btn-cmid-locked")
+        if (fc != 3) document.getElementById("c13").classList.remove("btn-cright-unbought"), document.getElementById("c13").classList.add("btn-cright-locked")
+    }
+
     update()
     updateUpgrades()
     updateRebirthUpgrades()
+    recalcProd()
 }
 
 function exportGame() {
@@ -137,7 +199,7 @@ function importGame() {
     let sav = prompt("Please import your save:")
     sav = LZString.decompressFromEncodedURIComponent(sav)
     localStorage.setItem("treegamesave", sav)
-    load()
+    window.location.reload()
 }
 
 function resetGame() {

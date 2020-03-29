@@ -3,8 +3,8 @@ function rebirth() {
     if (calcRP().lt(1) || game.z.amount.lt(1) || document.getElementById(54).classList.contains("btn-locked")) return;
     game.rp.amount = game.rp.amount.add(calcRP())
     game.x.amount = (game.rupgrades.includes(21) ? new D(1e5) : new D(0))
-    game.y.amount = (game.rupgrades.includes(31) ? new D(1e5) : new D(0))
-    game.z.amount = (game.rupgrades.includes(41) ? new D(1e5) : new D(0))
+    game.y.amount = (game.rupgrades.includes(21) ? new D(1e5) : new D(0))
+    game.z.amount = (game.rupgrades.includes(21) ? new D(1e5) : new D(0))
     game.upgrades = [];
     ([13, 14, 16, 17,
     23, 24, 25, 26, 27,
@@ -25,7 +25,18 @@ function rebirth() {
 }
 
 function calcRP() {
-    return new Decimal(game.z.amount.div(1e10).log10()).pow(1/2).floor().times(game.rupgrades.includes(24) ? 100 : 1).times(game.rupgrades.includes(34) ? 100 : 1).times(game.rupgrades.includes(44) ? 1e5 : 1)
+    if (game.z.amount.lt(1e11)) return new D(0)
+    let mult1 = game.rupgrades.includes(24) ? 50 : 1
+    let mult2 = game.rupgrades.includes(34) ? 100 : 1
+    let mult3 = game.rupgrades.includes(44) ? 1e5 : 1
+    let xmult = D.max(1, new D(game.x.amount.div(1e20).log10()).pow(1/(game.choice.choices[1] == 1 || game.choice.choices[1] == 3 ? 2 : 4) /* 4th root */).floor())
+    let ymult = D.max(1, new D(game.y.amount.div(1e15).log10()).pow(1/(game.choice.choices[1] == 1 || game.choice.choices[1] == 2 ? 2 : 3)).floor())
+    let zmult = D.max(1, game.choice.choices[1] == 2 || game.choice.choices[1] == 3 ? game.z.amount.log10() : 1)
+    let _4mult= 1
+    if (game.choice.choices[3] == 1) _4mult = 100 ** game.choice.choices.filter(x => x == 3).length
+    if (game.choice.choices[3] == 2) _4mult = 100 ** game.choice.choices.filter(x => x == 2).length
+    if (game.choice.choices[3] == 3) _4mult = 100 ** game.choice.choices.filter(x => x == 1).length
+    return new D(game.z.amount.div(game.choice.choices[0] == 1 ? 1 : 1e10).log10()).pow((game.choice.choices[0] == 2 ? 3/4 : 1/2)).floor().times(mult1).times(mult2).times(mult3).times(game.rupgrades.includes(31) ? xmult : 1).times(game.rupgrades.includes(41) ? ymult : 1).times(zmult).times(_4mult)
 }
 
 // documentation somewhere around game.js:101
@@ -39,11 +50,20 @@ function buyreb(id) {
     ele.classList.remove("btn-rebirth-unbought")
     ele.classList.add("btn-rebirth-bought")
 	game.rupgrades.push(id)
-    if (rebirthChildList[id]) {
+    if (rebirthChildList[id] && id != 63) {
         rebirthChildList[id].forEach(id2 => {
             let ele2 = document.getElementById("r" + id2)
             ele2.classList.remove("btn-rebirth-locked")
             ele2.classList.add("btn-rebirth-unbought")
         })
     }
+    if (id == 63) {
+        document.getElementById("c11").classList.remove("btn-cleft-locked")
+        document.getElementById("c11").classList.add("btn-cleft-unbought")
+        document.getElementById("c12").classList.remove("btn-cmid-locked")
+        document.getElementById("c12").classList.add("btn-cmid-unbought")
+        document.getElementById("c13").classList.remove("btn-cright-locked")
+        document.getElementById("c13").classList.add("btn-cright-unbought")
+    }
+    recalcProd()
 }

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Tree Game is an incremental game based around a skill tree.">
     <title>Tree Game</title>
+    <link rel="manifest" href="/tree-game/manifest.webmanifest">
 	<link type="text/css" rel="stylesheet" href="game.css">
 	<link id="themecss" type="text/css" rel="stylesheet" href="themes/light.css">
 </head>
@@ -110,17 +111,80 @@
                 <td></td>
                 <td><button class="btn btn-rebirth-locked" id="r65" onclick="buyreb(65)">.</button></td>
             </tr>
+            <tr>
+                <td><button class="btn btn-cleft-locked"  id="c11" onclick="buyC(1,1)">.</button></td>
+                <td><button class="btn btn-cmid-locked"   id="c12" onclick="buyC(1,2)">.</button></td>
+                <td><button class="btn btn-cright-locked" id="c13" onclick="buyC(1,3)">.</button></td>
+                <td><button class="btn btn-bought" onclick="respec()">Respec Choice Tree.</button></td>
+                <td><button class="btn btn-rebirth-locked" id="r75" onclick="buyreb(75)">.</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button class="btn btn-creg-locked" id="c22" onclick="buyC(2)">.</button></td>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r85" onclick="buyreb(85)">.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-cleft-locked"  id="c31" onclick="buyC(3,1)">.</button></td>
+                <td><button class="btn btn-cmid-locked"   id="c32" onclick="buyC(3,2)">.</button></td>
+                <td><button class="btn btn-cright-locked" id="c33" onclick="buyC(3,3)">.</button></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r95" onclick="buyreb(95)">.</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button class="btn btn-creg-locked" id="c42" onclick="buyC(4)">.</button></td>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r105" onclick="buyreb(105)">.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-cleft-locked"  id="c51" onclick="buyC(5,1)">.</button></td>
+                <td><button class="btn btn-cmid-locked"   id="c52" onclick="buyC(5,2)">.</button></td>
+                <td><button class="btn btn-cright-locked" id="c53" onclick="buyC(5,3)">.</button></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r115" onclick="buyreb(115)">.</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button class="btn btn-creg-locked" id="c62" onclick="buyC(6)">.</button></td>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r125" onclick="buyreb(125)">.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-cleft-locked"  id="c71" onclick="buyC(7,1)">.</button></td>
+                <td><button class="btn btn-cmid-locked"   id="c72" onclick="buyC(7,2)">.</button></td>
+                <td><button class="btn btn-cright-locked" id="c73" onclick="buyC(7,3)">.</button></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r135" onclick="buyreb(135)">.</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button class="btn btn-creg-locked" id="c82" onclick="buyC(8)">.</button></td>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r145" onclick="buyreb(145)">.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-cleft-locked"  id="c91" onclick="buyC(9,1)">.</button></td>
+                <td><button class="btn btn-cmid-locked"   id="c92" onclick="buyC(9,2)">.</button></td>
+                <td><button class="btn btn-cright-locked" id="c93" onclick="buyC(9,3)">.</button></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r155" onclick="buyreb(155)">.</button></td>
+            </tr>
         </table>
     </span>
     <canvas id="rebirth-canvas"></canvas></span>
 	<span id="optionsTab" class="tab"> <!-- Options Tab-->
-        <button class="btn" onclick="changeTheme()">Change Theme<br>Currently <span id="theme">light</span>.</button>
+        <button class="btn" onclick="changeTheme()">Change Theme<br>Currently <span id="theme">Light</span>.</button>
         <button class="btn" onclick="changeNotation()">Change Notation<br>Currently <span id="notation">Scientific</span>.</button>
         <button class="btn" onclick="save()">Save Game</button>
         <button class="btn" onclick="resetGame()">Reset Game</button><br>
         <button class="btn" onclick="exportGame()">Export Game</button>
         <button class="btn" onclick="importGame()">Import Game</button>
-		<p id="amounts">Idea & a bit of code from <a href="https://ivark.github.io">Antimatter Dimensions</a>. Also using <a href="https://github.com/antimatter-dimensions/notations">notations</a>, <a href="https://github.com/pieroxy/lz-string">LZString</a>, and <a href="https://github.com/asvd/dragscroll">Dragscroll</a>. Why don't you join the  <a href="https://discord.gg/rrUUUJn">Discord Server</a>?</p>
+		<p id="amounts">Idea & a bit of code from <a href="https://ivark.github.io">Antimatter Dimensions</a>. Also using <a href="https://github.com/antimatter-dimensions/notations">notations</a>, <a href="https://github.com/pieroxy/lz-string">LZString</a>, and <a href="https://github.com/asvd/dragscroll">Dragscroll</a>. Why don't you join the  <a href="https://discord.io/treegame" style="font-size: 20px;">Discord Server</a>?</p>
 	</span>
   
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/break_infinity.js"></script>
@@ -131,6 +195,7 @@
 	<script type="text/javascript" src="render.js"></script>
     <script type="text/javascript" src="options.js"></script>
     <script type="text/javascript" src="rebirth.js"></script>
+    <script type="text/javascript" src="choice.js"></script>
     <script type="text/javascript" src="game.js" onload='if (localStorage.getItem("treegamesave") != null || localStorage.getItem("treegamesave") != undefined || localStorage.getItem("treegamesave") != "{}") load()'></script>
     <script>let x = window.setTimeout(()=>{resizeCanvas();resizeRebirthCanvas();window.clearTimeout(x)}, 250);</script>
 </body>

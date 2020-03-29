@@ -1,0 +1,20 @@
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: rgb(34, 36, 41);
+        color: white;
+    }
+    
+    button, .btn-locked {
+        border-color: white;
+        background-color: rgb(34, 36, 41);
+        color: white;
+    }
+    
+    .btn-unbought {
+        background-color: rgb(33, 33, 33);
+    }
+    
+    .btn-bought {
+        background-color: rgb(66, 66, 66);
+    }
+}
