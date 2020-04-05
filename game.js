@@ -39,6 +39,7 @@ function recalcProd() {
 
         if (u.includes(14)) ata = ata.add(25)
         if (u.includes(16)) ata = ata.add(10)
+        if (c[5] == 1) ata = ata.times(1e25)
         if (u.includes(13)) ata = ata.pow(1.5)
         if (u.includes(23)) ata = ata.times(10)
         if (u.includes(24)) ata = ata.pow(2)
@@ -74,6 +75,7 @@ function recalcProd() {
         let ata = new D(1)
 
         if (u.includes(34)) ata = ata.add(3)
+        if (c[5] == 3) ata = ata.times(1e10)
         if (u.includes(33)) ata = ata.times(5)
         if (u.includes(37)) ata = ata.times(5)
         if (u.includes(43)) ata = ata.pow(2)
@@ -166,8 +168,8 @@ function showTab(name) {
 	})
 	ge(name + "Tab").style.display = "";
     currentTab = name;
-    resizeCanvas()
-    resizeRebirthCanvas()
+    resizeCanvas("upg")
+    resizeCanvas("reb")
 }
 
 // set default notation
@@ -229,7 +231,7 @@ function buyCurrency(ele, curr) {
             document.getElementById(el).classList.add("btn-unbought")
         })
 	}
-	resizeCanvas()
+	resizeCanvas("upg")
     recalcProd()
 }
 

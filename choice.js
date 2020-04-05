@@ -7,7 +7,10 @@ const choiceCosts = [
     new D(0),
     new D(5e17),
     new D(0),
-    new D(1e111)
+    new D(5e25),
+    new D(0),
+    new D(1e29),
+    new D(0)
 ]
 
 function buyC(depth, choice) {

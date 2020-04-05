@@ -33,10 +33,15 @@ function calcRP() {
     let ymult = D.max(1, new D(game.y.amount.div(1e15).log10()).pow(1/(game.choice.choices[1] == 1 || game.choice.choices[1] == 2 ? 2 : 3)).floor())
     let zmult = D.max(1, game.choice.choices[1] == 2 || game.choice.choices[1] == 3 ? game.z.amount.log10() : 1)
     let _4mult= 1
+    let x2mult= game.choice.choices[4] == 1 ? new D(game.x.amount.log10()) : 1
+    let y2mult= game.choice.choices[4] == 2 ? new D(game.y.amount.log10()) : 1
+    let z2mult= game.choice.choices[4] == 3 ? new D(game.z.amount.log2()) : 1
     if (game.choice.choices[3] == 1) _4mult = 100 ** game.choice.choices.filter(x => x == 3).length
     if (game.choice.choices[3] == 2) _4mult = 100 ** game.choice.choices.filter(x => x == 2).length
     if (game.choice.choices[3] == 3) _4mult = 100 ** game.choice.choices.filter(x => x == 1).length
-    return new D(game.z.amount.div(game.choice.choices[0] == 1 ? 1 : 1e10).log10()).pow((game.choice.choices[0] == 2 ? 3/4 : 1/2)).floor().times(mult1).times(mult2).times(mult3).times(game.rupgrades.includes(31) ? xmult : 1).times(game.rupgrades.includes(41) ? ymult : 1).times(zmult).times(_4mult)
+    return new D(game.z.amount.div(game.choice.choices[0] == 1 ? 1 : 1e10).log10()).pow((game.choice.choices[0] == 2 ? 3/4 : 1/2)).floor().times(mult1).times(mult2).times(mult3).times(game.rupgrades.includes(31) ? xmult : 1)
+        .times(game.rupgrades.includes(41) ? ymult : 1).times(zmult).times(_4mult)
+        .times(x2mult).times(y2mult).times(z2mult)
 }
 
 // documentation somewhere around game.js:101

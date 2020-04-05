@@ -2,93 +2,90 @@ var canvas = document.getElementById("tree-canvas");
 var ctx = canvas.getContext("2d");
 var rcanvas = document.getElementById("rebirth-canvas");
 var rctx = rcanvas.getContext("2d");
+var tcanvas = document.getElementById("trial-canvas");
+var tctx = rcanvas.getContext("2d");
 
 window.addEventListener("resize", resizeCanvas);
 
 function getStrokeColor () {
     if (game.theme == 0) return "#000000";
-    if (game.theme == 2 && window.matchMedia("(prefers-color-scheme: light)").matches) return "#000000"
     if (game.theme == 1) return "#FFFFFF";
+    if (game.theme == 2 && window.matchMedia("(prefers-color-scheme: light)").matches) return "#000000"
     if (game.theme == 2 && window.matchMedia("(prefers-color-scheme: dark)").matches) return "#FFFFFF"
     return "#000000"
 }
 
-function resizeCanvas() {
-    canvas.width = 0;
-    canvas.height = 0;
-    canvas.width = document.body.scrollWidth;
-    canvas.height = document.body.scrollHeight;
-    drawStudyTree();
+function resizeCanvas(can) {
+    let canv;
+    if (can == "upg") canv = canvas
+    if (can == "reb") canv = document.getElementById("rebirth-canvas");
+    if (can == "tri") canv = tcanvas
+    canv.width = 0;
+    canv.height = 0;
+    canv.width = document.body.scrollWidth;
+    canv.height = document.body.scrollHeight;
+    drawStudyTree(can);
 }
 
-function drawTreeBranch(num1, num2) {
-    var start = document.getElementById(num1).getBoundingClientRect();
-    var end = document.getElementById(num2).getBoundingClientRect();
-    var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-    var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-    var x2 = end.left + (end.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-    var y2 = end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-    ctx.lineWidth = 15;
-    ctx.beginPath();
-    ctx.strokeStyle = getStrokeColor()
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-}
-
-function drawStudyTree() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-	for (arr in childList) {
-		childList[arr].forEach(child => {
-			drawTreeBranch(arr, child)
+function drawStudyTree(can) {
+    let ct, canv, children, ext;
+    if (can == "upg") {
+        ct = ctx
+        canv = canvas
+        children = childList
+        ext = ""
+    } else if (can == "reb") {
+        ct = rctx
+        canv = rcanvas
+        children = rebirthChildList
+        ext = "r"
+    } else if (can == "tri") {
+        ct = tctx
+        canv = tcanvas
+        children = trialChildList
+        ext = "t"
+    }
+    ct.clearRect(0, 0, canv.width, canv.height);
+	for (arr in children) {
+		children[arr].forEach(child => {
+			drawTreeBranch(arr, child, ext, ct)
 		})
 	}
-}
 
-function resizeRebirthCanvas() {
-    rcanvas.width = 0;
-    rcanvas.height = 0;
-    rcanvas.width = document.body.scrollWidth;
-    rcanvas.height = document.body.scrollHeight;
-    drawRebirthStudyTree();
-}
-
-function drawRebirthTreeBranch(num1, num2, type) {
-    let id = (num2 + "").startsWith("c") ? num2 : type + num2
-    var start = document.getElementById(type + num1).getBoundingClientRect();
-    var end = document.getElementById(id).getBoundingClientRect();
-    var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-    var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-    var x2 = end.left + (end.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-    var y2 = end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-    rctx.lineWidth = 15;
-    rctx.beginPath();
-    rctx.strokeStyle = getStrokeColor()
-    rctx.moveTo(x1, y1);
-    rctx.lineTo(x2, y2);
-    rctx.stroke();
-}
-
-function drawRebirthStudyTree() {
-    rctx.clearRect(0, 0, rcanvas.width, rcanvas.height);
-	for (arr in rebirthChildList) {
-		rebirthChildList[arr].forEach(child => {
-			drawRebirthTreeBranch(arr, child, "r")
-		})
-	}
-    //choice
-    for (let i = choiceUpgrades.start; i < choiceUpgrades.end + 1; i++) {
-        if (choiceCosts[i - 1].eq(0)) {
-            for (let j = 1; j < 4; j++) {
-                drawRebirthTreeBranch(i + "2", i + 1 + "" + j, "c")
-            }
-        } else {
-            for (let j = 1; j < 4; j++) {
-                drawRebirthTreeBranch(i + "" + j, i + 1 + "2", "c")
+    // choice
+    if (can == "reb") {
+        for (let i = choiceUpgrades.start; i < choiceUpgrades.end + 1; i++) {
+            if (choiceCosts[i - 1].eq(0)) {
+                for (let j = 1; j < 4; j++) {
+                    drawTreeBranch(i + "2", i + 1 + "" + j, "c", rctx)
+                }
+            } else {
+                for (let j = 1; j < 4; j++) {
+                    drawTreeBranch(i + "" + j, i + 1 + "2", "c", rctx)
+                }
             }
         }
+        drawTreeBranch(111, 122, "c", rctx)
+        drawTreeBranch(112, 122, "c", rctx)
+        drawTreeBranch(113, 122, "c", rctx)
     }
 }
+
+function drawTreeBranch(num1, num2, type, ct) {
+    let start = document.getElementById(type + num1).getBoundingClientRect();
+    let end = document.getElementById((num2 + "").startsWith("c") ? num2 : type + num2).getBoundingClientRect();
+    let x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+    let y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+    let x2 = end.left + (end.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+    let y2 = end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+    ct.lineWidth = 15;
+    ct.beginPath();
+    ct.strokeStyle = getStrokeColor()
+    ct.moveTo(x1, y1);
+    ct.lineTo(x2, y2);
+    ct.stroke();
+}
+
 
 const upgradeInfo = {
     13: ["Raise x production to the power of 1.5.", 2e4, "x"],
@@ -159,11 +156,14 @@ const rebirthUpgradeInfo = {
     135: ["TBA", 2e222],
     145: ["TBA", 2e222],
     155: ["TBA", 2e222],
+    165: ["TBA", 2e222],
+    175: ["TBA", 2e222],
+    185: ["TBA", 2e222],
 }
 
 const choiceUpgrades = {
     start: 1,
-    end: 9 - 1,
+    end: 11 - 1,
     "11": "RP formula is better.",
     "12": "z has a greater effect on RP gain.",
     "13": "Gain a static multiplier to z production.",
@@ -180,9 +180,14 @@ const choiceUpgrades = {
     "72": "Gain a multiplier to RP equal to 100<sup>n</sup>, n being the amount of middle choice upgrades you have.",
     "73": "Gain a multiplier to RP equal to 100<sup>n</sup>, n being the amount of left choice upgrades you have.",
     "82": null,
-    "91": "Coming soon...",
-    "92": "Coming soon...",
-    "93": "Coming soon...",
+    "91": "Gain a multiplier to RP based on x.",
+    "92": "Gain a multiplier to RP based on y.",
+    "93": "Gain a multiplier to RP based on z.",
+    "102":null,
+    "111":"Multiply core production of x by 1e25.",
+    "112":"This upgrade does absolutely nothing.",
+    "113":"Multiply core production of z by 1e10.",
+    "122":null,
 }
 
 function updateUpgrades() {

@@ -14,6 +14,7 @@
 	<div id="header">
 		<button class="btn tabbtn" id="upgrades" onclick="showTab('upgrades')">Upgrade Tree</button>
 		<button class="btn tabbtn" id="rebirth" onclick="showTab('rebirth')" style="display:none;">Rebirth Tree</button>
+		<button class="btn tabbtn" id="rebirth" onclick="showTab('trial')" style="display:none;">Trial Tree</button>
 		<button class="btn tabbtn" id="options" onclick="showTab('options')">Options</button>
         <div id="currencies">
 			<span id="x" style="display:inline-block">0&hairsp;x</span><span id="y">0&hairsp;y</span><span id="z">0&hairsp;z</span><span id="rp">0&hairsp;RP</span>
@@ -174,9 +175,33 @@
                 <td></td>
                 <td><button class="btn btn-rebirth-locked" id="r155" onclick="buyreb(155)">.</button></td>
             </tr>
+            <tr>
+                <td></td>
+                <td><button class="btn btn-creg-locked" id="c102" onclick="buyC(10)">.</button></td>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r165" onclick="buyreb(165)">.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-cleft-locked"  id="c111" onclick="buyC(11,1)">.</button></td>
+                <td><button class="btn btn-cmid-locked"   id="c112" onclick="buyC(11,2)">.</button></td>
+                <td><button class="btn btn-cright-locked" id="c113" onclick="buyC(11,3)">.</button></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r175" onclick="buyreb(175)">.</button></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button class="btn btn-creg-locked" id="c122" onclick="">Unlock Trial Tree. (WIP)</button></td>
+                <td></td>
+                <td></td>
+                <td><button class="btn btn-rebirth-locked" id="r185" onclick="buyreb(185)">.</button></td>
+            </tr>
         </table>
     </span>
     <canvas id="rebirth-canvas"></canvas></span>
+    <span id="trialTab" class="tab">
+
+    </span>
 	<span id="optionsTab" class="tab"> <!-- Options Tab-->
         <button class="btn" onclick="changeTheme()">Change Theme<br>Currently <span id="theme">Light</span>.</button>
         <button class="btn" onclick="changeNotation()">Change Notation<br>Currently <span id="notation">Scientific</span>.</button>
@@ -197,6 +222,6 @@
     <script type="text/javascript" src="rebirth.js"></script>
     <script type="text/javascript" src="choice.js"></script>
     <script type="text/javascript" src="game.js" onload='if (localStorage.getItem("treegamesave") != null || localStorage.getItem("treegamesave") != undefined || localStorage.getItem("treegamesave") != "{}") load()'></script>
-    <script>let x = window.setTimeout(()=>{resizeCanvas();resizeRebirthCanvas();window.clearTimeout(x)}, 250);</script>
+    <script>let x = window.setTimeout(()=>{resizeCanvas("upg");resizeCanvas("reb");window.clearTimeout(x)}, 250);</script>
 </body>
 </html>
