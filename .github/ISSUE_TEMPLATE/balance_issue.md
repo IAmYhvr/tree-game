@@ -1,6 +1,6 @@
 ---
 name: Balance issue
-about: Clicking is bad pls fix
+about: X production is bad pls fix
 title: ''
 labels: balance
 assignees: ''
