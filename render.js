@@ -3,22 +3,23 @@ var ctx = canvas.getContext("2d");
 var rcanvas = document.getElementById("rebirth-canvas");
 var rctx = rcanvas.getContext("2d");
 var tcanvas = document.getElementById("trial-canvas");
-var tctx = rcanvas.getContext("2d");
+var tctx = tcanvas.getContext("2d");
 
-window.addEventListener("resize", resizeCanvas);
+window.addEventListener("resize", (_=>resizeCanvas("upg")));
 
 function getStrokeColor () {
     if (game.theme == 0) return "#000000";
     if (game.theme == 1) return "#FFFFFF";
     if (game.theme == 2 && window.matchMedia("(prefers-color-scheme: light)").matches) return "#000000"
     if (game.theme == 2 && window.matchMedia("(prefers-color-scheme: dark)").matches) return "#FFFFFF"
+    if (game.theme == 3) return "#FF0000"
     return "#000000"
 }
 
 function resizeCanvas(can) {
     let canv;
     if (can == "upg") canv = canvas
-    if (can == "reb") canv = document.getElementById("rebirth-canvas");
+    if (can == "reb") canv = rcanvas;
     if (can == "tri") canv = tcanvas
     canv.width = 0;
     canv.height = 0;
@@ -41,8 +42,8 @@ function drawStudyTree(can) {
         ext = "r"
     } else if (can == "tri") {
         ct = tctx
-        canv = tcanvas
-        children = trialChildList
+        canv = tcanvas//0   1    2    3    4   5   6
+        children = [[1, 5], [2], [3], [6], [], [4], [7]]
         ext = "t"
     }
     ct.clearRect(0, 0, canv.width, canv.height);
@@ -122,28 +123,28 @@ const rebirthUpgradeInfo = {
     11: ["Begin.", 0],
     12: ["Multiply production x, y, and z by 4.", 1],
     13: ["Automatically buy all upgrades that cost x.", 1],
-    14: ["Multiply pre-rebirth production by unspent RP.", 3],
-    15: ["TBA", 2e222],
+    14: ["Multiply pre-rebirth production by unspent RP.", 1],
+    15: ["Increase trial mult on production.", 1e33],
 
     21: ["Start with 1e5x, y, and z upon each rebirth.", 10],
     22: ["Square all pre-rebirth production.", 15],
     23: ["Automatically buy all upgrades that cost y.", 9],
     24: ["Gain a 50x multiplier to RP gain.", 50],
-    25: ["TBA", 2e222],
+    25: ["Trial completions boost RP gain.", 5e33],
 
     31: ["x boosts RP gain.", 5e5],
     32: ["Cube production of x, y, and z.", 1e6],
     33: ["Automatically buy all upgrades that cost z.", 1e3],
     34: ["Gain another 100x multiplier to RP gain.", 5e3],
-    35: ["TBA", 2e222],
+    35: ["Increase trial mult on production even more.", 1e44],
 
     41: ["y boosts RP gain.", 2.5e6],
     42: ["Raise the production of x, y, and z to the power of 5.", 1e8],
     43: ["Automatically gain 1% of RP you would get on rebirth every second.", 2.5e6],
     44: ["Gain a 1e5x multiplier to RP gain.", 1e7],
-    45: ["TBA", 2e222],
+    45: ["Raise RP gain to the power of 2.", 1e45],
 
-    55: ["TBA", 2e222],
+    55: ["RP Boosts RP gain.", 1e89],
 
     63: ["Unlock Choice Tree.", 1e13],
     65: ["TBA", 2e222],
@@ -190,10 +191,22 @@ const choiceUpgrades = {
     "122":null,
 }
 
+const trialInfo = [
+    "All production is raised to the power of 2.2, but all upgrade costs are raised to the power of 1.5, and choice and rebirth upgrades don't work.",
+    "All production is raised to the power of 0.1.",
+    "All production is divided by 5 and rebirth and choice upgrades have no affect.",
+    "Rebirth upgrades don't work.",
+
+    "Production is raised to the power of (1 ÷ amount of normal upgrades you have)",
+    "You can only buy 15 upgrades.",
+    "Choice upgrades don't work, along with the last row of rebirth upgrades.",
+    "This is just a normal run."
+]
+
 function updateUpgrades() {
     for (key in upgradeInfo) {
         let dat = upgradeInfo[key]
-        document.getElementById(key).innerHTML = dat[0] + "<br>Cost: " + (dat[1] == 0 ? "Free" : not.format(dat[1], 2, 0) + "&hairsp;" + dat[2])
+        document.getElementById(key).innerHTML = dat[0] + "<br>Cost: " + (dat[1] == 0 ? "Free" : not.format(game.inTrial == 1 ? (new D(dat[1])).pow(1.5) : dat[1], 2, 0) + "&hairsp;" + dat[2])
     }
 }
 
@@ -212,5 +225,13 @@ function updateChoiceUpgrades() {
         }} else if (choiceUpgrades[i + "2"] == null) {
             document.getElementById("c" + i + "2").innerHTML = "Regroup.<br>Cost: Free"
         }
+    }
+    $("#c122").innerHTML = "Unlock Trial Tree.<br>Cost: " + not.format(1e32, 2, 0) + "&hairsp;RP"
+}
+
+function updateTrialTree() {
+    for (key in trialInfo) {
+        let dat = trialInfo[key]
+        document.getElementById("t"+key).innerHTML = dat + "<br>" + not.format(game.trials[key]) + " Completion" + (game.trials[key] == 1 ? "" : "s")
     }
 }

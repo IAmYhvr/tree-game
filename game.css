@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 
-* {
+*, button {
     outline: none;
-    font-family: "Inter", sans-serif
+    font-family: "Inter", sans-serif;
 }
 
 body {
@@ -10,7 +10,7 @@ body {
     width: auto;
 }
 
-#tree-canvas, #rebirth-canvas {
+#tree-canvas, #rebirth-canvas, #trial-canvas {
     top: 0;
     bottom: 0;
     left: 0;
@@ -48,6 +48,16 @@ body {
     vertical-align: top;
     margin:7px;
     z-index: 999;
+}
+
+.btn:not(.tabbtn):hover {
+    width: 175px;
+    height: 85px;
+}
+
+.btn:not(.tabbtn):active {
+    width: 160px;
+    height: 75px;
 }
 
 .btn-bought {
@@ -125,3 +135,17 @@ body {
 .btn-creg-locked {
     background-color: rgb(100, 100, 0);
 }
+
+/*
+0 1 2 3 8
+4 5 6 7 9
+*/
+
+.btn-trial { color: black }
+
+#t0 { background-color: #FF0000 }
+#t1, #t4 { background-color: #FF8800 }
+#t2, #t5 { background-color: #FFFF00 }
+#t3, #t6 { background-color: #88FF00 }
+#t8, #t7 { background-color: #00FF88 }
+#t9 { background-color: #00FFFF }

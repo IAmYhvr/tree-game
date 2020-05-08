@@ -1,0 +1,8 @@
+* {
+    font-family: "Comic Sans MS", sans-serif !important;
+    background-color: yellow !important;
+}
+
+button#upgrades {
+    content: "Cool Stuff" !important;
+}

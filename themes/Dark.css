@@ -9,10 +9,26 @@ button, .btn-locked {
     color: white;
 }
 
+.btn-rebirth-bought {
+    background-color: rgb(175, 0, 175);
+}
+
+.btn-rebirth-unbought {
+    background-color: rgb(125, 0, 125);
+}
+
+.btn-rebirth-locked {
+    background-color: rgb(75, 0, 75);
+}
+
 .btn-unbought {
     background-color: rgb(33, 33, 33);
 }
 
 .btn-bought {
     background-color: rgb(66, 66, 66);
+}
+
+.btn-creg-bought, .btn-creg-unbought, .btn-creg-locked {
+    color: black;
 }

@@ -2,6 +2,20 @@
 
 Hey yo, this is a changelog, it's a markdown file cause I'm too lazy to make another HTML file
 
+## v`x` - "Still not using version numbers" - May 7, 2020
+- Added Trial tree! Get there to see what it does.
+- Added "Strange" theme.
+- Added `m` keybind for buying all upgrades in the normal tree.
+- Added `r` keybind for faster rebirthing.
+- The game now displays the amount of the newest currency you have in the title bar.
+- Increased size of discord link, yet again
+
+## v___ - "I'm not using version numbers anymore" - Apr 5, 2020
+- Backend stuff you don't care about
+- Bigger numbers
+- Like 2 new upgrades on the choice tree
+- ???
+
 ## v1.1 - "The goodening" - Mar 29, 2020
 - Added a dozen choice upgrades
 - Added "Auto" theme

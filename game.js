@@ -20,8 +20,11 @@ const defaultGame = {
     theme: 0,
     notation: 0,
     rebirthed: false,
+    trialTreeUnlocked: false,
+    inTrial: 0,
+    trials: new Array(8).fill(0), // __only__ store completions, rest can be done with m a f s
     lastTick: Date.now(),
-    version: 6
+    version: 7
 }
 
 game = defaultGame
@@ -32,6 +35,11 @@ function recalcProd() {
     let u = game.upgrades
     let r = game.rupgrades
     let c = game.choice.choices
+    let t = game.inTrial
+    let choiceBroken = (t == 1 || t == 3 || t == 7)
+    if ((choiceBroken && t != 7) || t == 4) r = []
+    if (choiceBroken) c = []
+    if (t == 7) r = r.filter(x => x < 40)
     prodInfo = {x: new D(0), y: new D(0), z: new D(0)}
 
     if (u.includes(15)) {
@@ -52,6 +60,8 @@ function recalcProd() {
         if (r.includes(32)) ata = ata.pow(3)
         if (r.includes(42)) ata = ata.pow(5)
 
+        if (t == 1) ata = ata.plus(1).pow(2.2)
+
         prodInfo.x = ata
     }
 
@@ -67,6 +77,8 @@ function recalcProd() {
         if (r.includes(22)) ata = ata.pow(2)
         if (r.includes(32)) ata = ata.pow(3)
         if (r.includes(42)) ata = ata.pow(5)
+
+        if (t == 1) ata = ata.pow(2.2)
 
         prodInfo.y = ata
     }
@@ -89,6 +101,8 @@ function recalcProd() {
         if (r.includes(42)) ata = ata.pow(5)
 
         if (c[0] == 3) ata = ata.times(1e308)
+
+        if (t == 1) ata = ata.pow(2.2)
 
         prodInfo.z = ata
     }
@@ -160,6 +174,9 @@ const rebirthChildList = {
     125: [135],
     135: [145],
     145: [155],
+    155: [165],
+    165: [175],
+    175: [185]
 }
 
 function showTab(name) {
@@ -170,6 +187,7 @@ function showTab(name) {
     currentTab = name;
     resizeCanvas("upg")
     resizeCanvas("reb")
+    resizeCanvas("tri")
 }
 
 // set default notation
@@ -182,9 +200,11 @@ var currentTab;
 // buy an upgrade
 
 function buybtn(ele) {
+    if (game.inTrial == 6 && game.upgrades.length >= 15) return;
     if (typeof ele == "number") ele = document.getElementById(ele)
     let id = Number(ele.id)
     let cost = new D(upgradeInfo[id][1])
+    cost = game.inTrial == 1 ? cost.pow(1.5) : cost
     let costCurr = upgradeInfo[id][2]
     // reject the purchase of the upgrade if you already have it
     if (game.upgrades.includes(id)) return;
@@ -217,6 +237,7 @@ function buyCurrency(ele, curr) {
     let id = Number(ele.id)
     let cost = new D(upgradeInfo[id][1])
     let costCurr = upgradeInfo[id][2]
+    cost = game.inTrial == 1 ? cost.pow(1.5) : cost
 	if (game.upgrades.includes(id)) return;
     if (cost.gt(game[costCurr].amount)) return;
     if (ele.classList.contains("btn-locked")) return;
@@ -236,12 +257,20 @@ function buyCurrency(ele, curr) {
 }
 
 function update() {
+    let tri = getTrialGoal(game.inTrial)
     // update currency display
 	document.querySelector("#x").innerHTML = not.format(game.x.amount, 2, 0) + "&hairsp;x"
 	document.querySelector("#y").innerHTML = ", " + not.format(game.y.amount, 2, 0) + "&hairsp;y"
 	document.querySelector("#z").innerHTML = ", " + not.format(game.z.amount, 2, 0) + "&hairsp;z"
     document.querySelector("#rp").innerHTML= ", " + not.format(game.rp.amount,2, 0) + "&hairsp;RP"
-    document.getElementById(54).innerHTML  ="Rebirth.<br>Cost: "+not.format(1e11,2,0)+"&hairsp;z<br>For "+(calcRP().exponent == 4500000000000000 ? not.format(0,2,0) : not.format(calcRP(),2,0))+"&hairsp;RP"
+    document.getElementById(54).innerHTML  = "Rebirth.<br>Cost: " + not.format(1e11,2,0) + "&hairsp;z<br>For " + (calcRP().exponent == 4500000000000000 ? not.format(0,2,0) : not.format(calcRP(),2,0)) + "&hairsp;RP"
+    document.getElementById("t8").innerHTML= "Complete the trial.<br>Goal: " + (tri == "∞" ? tri : not.format(tri, 2, 0)) + "&hairsp;z"
+
+    let title = document.querySelector("title")
+    if (game.rp.amount.gt(0)) title.textContent = "Tree Game | " + not.format(game.rp.amount, 2, 0) + "RP"
+    else if (game.z.amount.gt(0)) title.textContent = "Tree Game | " + not.format(game.z.amount, 2, 0) + "z"
+    else if (game.y.amount.gt(0)) title.textContent = "Tree Game | " + not.format(game.y.amount, 2, 0) + "y"
+    else title.textContent = "Tree Game | " + not.format(game.x.amount, 2, 0) + "x"
 }
 
 // show intial tab so everything isn't on one screen
@@ -254,9 +283,16 @@ window.setInterval(() => {
         // Brute force. Yipee!
         let diff = Date.now() - game.lastTick
         game.lastTick = Date.now()
-        let u = game.upgrades
-        let r = game.rupgrades
-        let c = game.choice.choices
+        let u = game.upgrades,
+            r = game.rupgrades,
+            c = game.choice.choices,
+            t = game.inTrial,
+            choiceBroken = (t == 1 || t == 3 || t == 7),
+            tr= [1,2,3,4,5,6,7,8].map(n => getTrialReward(n))
+            tm= new D(1);
+        if ((choiceBroken && t != 7) || t == 4) r = []
+        if (choiceBroken) c = []
+        tr.map(x => tm = tm.mul(x))
         if (u.includes(15)) {
             ata = new D(prodInfo.x)
 
@@ -266,6 +302,11 @@ window.setInterval(() => {
             if (r.includes(14)) ata = ata.times(D.max(1, game.rp.amount))
 
             if (c[2] == 2) ata = ata.times(game.rp.amount.pow(25))
+
+            if (t == 2) ata = ata.pow(0.1)
+            if (t == 3) ata = ata.div(5)
+            if (t == 5) ata = ata.pow(1 / game.upgrades.length)
+            ata = ata.mul(tm)
 		  
 			game.x.amount = game.x.amount.add(ata.times(diff / 1000))
 		}
@@ -279,6 +320,11 @@ window.setInterval(() => {
 
             if (c[2] == 2) ata = ata.times(game.rp.amount.pow(25))
 
+            if (t == 2) ata = ata.pow(0.1)
+            if (t == 3) ata = ata.div(5)
+            if (t == 5) ata = ata.pow(1 / game.upgrades.length)
+            ata = ata.mul(tm)
+
 			game.y.amount = game.y.amount.add(ata.times(diff / 1000))
 		}
 
@@ -291,23 +337,31 @@ window.setInterval(() => {
             if (c[2] == 2) ata = ata.times(game.rp.amount.pow(25))
             if (c[2] == 3) ata = ata.pow(new D(game.y.amount.log10()).log(8))
 
+            if (t == 2) ata = ata.pow(0.1)
+            if (t == 3) ata = ata.div(5)
+            if (t == 5) ata = ata.pow(1 / game.upgrades.length)
+            ata = ata.mul(tm)
+
             game.z.amount = game.z.amount.add(ata.times(diff / 1000))
         }
 
+        if (game.inTrial == 6) {
+            update(); return; }
+
         // autobuy x
         if (r.includes(13)) {
-            buybtn(15)
+            buyCurrency(15, "x")
             buybtn(16)
             buybtn(25)
             buybtn(24)
             buybtn(14)
             buybtn(13)
             buybtn(23)
-            buyCurrency(26, 'y')
+            buyCurrency(26, "y")
             buybtn(27)
             buybtn(44)
             buybtn(47)
-            buyCurrency(55, 'z')
+            buyCurrency(55, "z")
         }
 
         // autobuy y

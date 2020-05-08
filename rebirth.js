@@ -1,5 +1,6 @@
 function rebirth() {
     // wooow
+    if (game.inTrial != 0) return;
     if (calcRP().lt(1) || game.z.amount.lt(1) || document.getElementById(54).classList.contains("btn-locked")) return;
     game.rp.amount = game.rp.amount.add(calcRP())
     game.x.amount = (game.rupgrades.includes(21) ? new D(1e5) : new D(0))
@@ -26,22 +27,26 @@ function rebirth() {
 
 function calcRP() {
     if (game.z.amount.lt(1e11)) return new D(0)
-    let mult1 = game.rupgrades.includes(24) ? 50 : 1
-    let mult2 = game.rupgrades.includes(34) ? 100 : 1
-    let mult3 = game.rupgrades.includes(44) ? 1e5 : 1
-    let xmult = D.max(1, new D(game.x.amount.div(1e20).log10()).pow(1/(game.choice.choices[1] == 1 || game.choice.choices[1] == 3 ? 2 : 4) /* 4th root */).floor())
-    let ymult = D.max(1, new D(game.y.amount.div(1e15).log10()).pow(1/(game.choice.choices[1] == 1 || game.choice.choices[1] == 2 ? 2 : 3)).floor())
-    let zmult = D.max(1, game.choice.choices[1] == 2 || game.choice.choices[1] == 3 ? game.z.amount.log10() : 1)
-    let _4mult= 1
-    let x2mult= game.choice.choices[4] == 1 ? new D(game.x.amount.log10()) : 1
-    let y2mult= game.choice.choices[4] == 2 ? new D(game.y.amount.log10()) : 1
-    let z2mult= game.choice.choices[4] == 3 ? new D(game.z.amount.log2()) : 1
+    let mult1 = game.rupgrades.includes(24) ? 50 : 1,
+        mult2 = game.rupgrades.includes(34) ? 100 : 1,
+        mult3 = game.rupgrades.includes(44) ? 1e5 : 1,
+        xmult = D.max(1, new D(game.x.amount.div(1e20).log10()).pow(1/(game.choice.choices[1] == 1 || game.choice.choices[1] == 3 ? 2 : 4) /* 4th root */).floor()),
+        ymult = D.max(1, new D(game.y.amount.div(1e15).log10()).pow(1/(game.choice.choices[1] == 1 || game.choice.choices[1] == 2 ? 2 : 3)).floor()),
+        zmult = D.max(1, game.choice.choices[1] == 2 || game.choice.choices[1] == 3 ? game.z.amount.log10() : 1),
+        _4mult= 1,
+        x2mult= game.choice.choices[4] == 1 ? new D(game.x.amount.log10()) : 1,
+        y2mult= game.choice.choices[4] == 2 ? new D(game.y.amount.log10()) : 1,
+        z2mult= game.choice.choices[4] == 3 ? new D(game.z.amount.log2()) : 1,
+        tr    = [0,1,2,3,4,5,6,7].map(n => Math.max(1, game.trials[n] * 10)),
+        tm    = new D(1);
+    tr.map(x => tm = tm.mul(x))
     if (game.choice.choices[3] == 1) _4mult = 100 ** game.choice.choices.filter(x => x == 3).length
     if (game.choice.choices[3] == 2) _4mult = 100 ** game.choice.choices.filter(x => x == 2).length
     if (game.choice.choices[3] == 3) _4mult = 100 ** game.choice.choices.filter(x => x == 1).length
     return new D(game.z.amount.div(game.choice.choices[0] == 1 ? 1 : 1e10).log10()).pow((game.choice.choices[0] == 2 ? 3/4 : 1/2)).floor().times(mult1).times(mult2).times(mult3).times(game.rupgrades.includes(31) ? xmult : 1)
         .times(game.rupgrades.includes(41) ? ymult : 1).times(zmult).times(_4mult)
-        .times(x2mult).times(y2mult).times(z2mult)
+        .times(x2mult).times(y2mult).times(z2mult).times(tm).pow(game.rupgrades.includes(45) ? 2 : 1)
+        .times(game.rupgrades.includes(55) ? D.max(new D(game.rp.amount.log10()), 1) : 1)
 }
 
 // documentation somewhere around game.js:101

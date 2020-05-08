@@ -5,16 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Tree Game is an incremental game based around a skill tree.">
-    <title>Tree Game</title>
+    <title id="title">Tree Game</title>
     <link rel="manifest" href="/tree-game/manifest.webmanifest">
 	<link type="text/css" rel="stylesheet" href="game.css">
-	<link id="themecss" type="text/css" rel="stylesheet" href="themes/light.css">
+    <link id="themecss" type="text/css" rel="stylesheet" href="themes/light.css">
+    <link rel="shortcut icon" type="image/png" href="images/TG-192.png"/>
 </head>
 <body class="dragscroll">
 	<div id="header">
 		<button class="btn tabbtn" id="upgrades" onclick="showTab('upgrades')">Upgrade Tree</button>
 		<button class="btn tabbtn" id="rebirth" onclick="showTab('rebirth')" style="display:none;">Rebirth Tree</button>
-		<button class="btn tabbtn" id="rebirth" onclick="showTab('trial')" style="display:none;">Trial Tree</button>
+		<button class="btn tabbtn" id="trial" onclick="showTab('trial')" style="display:none;">Trial Tree</button>
 		<button class="btn tabbtn" id="options" onclick="showTab('options')">Options</button>
         <div id="currencies">
 			<span id="x" style="display:inline-block">0&hairsp;x</span><span id="y">0&hairsp;y</span><span id="z">0&hairsp;z</span><span id="rp">0&hairsp;RP</span>
@@ -24,11 +25,11 @@
     <span id="upgradesTab" class="tab"> <!-- Upgrade tab -->
       <table class="table">
         <tr>
-            <td><button class="btn btn-locked" id="13" onclick="buybtn(this)">Raise x to the power of 1.5.<br>Cost: 2e4x</button></td>
-            <td><button class="btn btn-locked" id="14" onclick="buybtn(this)">Increase core production of x by 25.<br>Cost: 2500x</button></td>
+            <td><button class="btn btn-locked"   id="13" onclick="buybtn(this)">Raise x to the power of 1.5.<br>Cost: 2e4x</button></td>
+            <td><button class="btn btn-locked"   id="14" onclick="buybtn(this)">Increase core production of x by 25.<br>Cost: 2500x</button></td>
             <td><button class="btn btn-unbought" id="15" onclick="buyCurrency(this, 'x')">Begin production of x.<br>Cost: Free</button></td>
-            <td><button class="btn btn-locked" id="16" onclick="buybtn(this)">Increase core production of x by 10.<br>Cost: 100x</button></td>
-            <td><button class="btn btn-locked" id="17" onclick="buybtn(this)">Multiply x & y production by z<sup>1/10</sup>.<br>Cost: 1e3z</button></td>
+            <td><button class="btn btn-locked"   id="16" onclick="buybtn(this)">Increase core production of x by 10.<br>Cost: 100x</button></td>
+            <td><button class="btn btn-locked"   id="17" onclick="buybtn(this)">Multiply x & y production by z<sup>1/10</sup>.<br>Cost: 1e3z</button></td>
         </tr>
     </table>
     <table class="table">
@@ -67,7 +68,7 @@
             <td><button class="btn btn-locked" id="57" onclick="buybtn(this)">Multiply z production by 2.<br>Cost: 5e5y</button></td>
         </tr>
     </table>
-    <canvas id="tree-canvas"></canvas></span>
+    <canvas id="tree-canvas" class="canvas"></canvas></span>
     <span id="rebirthTab" class="tab"> <!-- Rebirth Tab -->
         <table class="table">
             <tr>
@@ -191,17 +192,31 @@
             </tr>
             <tr>
                 <td></td>
-                <td><button class="btn btn-creg-locked" id="c122" onclick="">Unlock Trial Tree. (WIP)</button></td>
+                <td><button class="btn btn-creg-locked" id="c122" onclick="unlockTrialTree()">Unlock Trial Tree. (WIP)</button></td>
                 <td></td>
                 <td></td>
                 <td><button class="btn btn-rebirth-locked" id="r185" onclick="buyreb(185)">.</button></td>
             </tr>
         </table>
-    </span>
-    <canvas id="rebirth-canvas"></canvas></span>
+    <canvas id="rebirth-canvas" class="canvas"></canvas></span>
     <span id="trialTab" class="tab">
-
-    </span>
+        <table class="table">
+            <tr>
+                <td><button class="btn btn-trial" id="t0" onclick="enterTrial(1)">.</button></td>
+                <td><button class="btn btn-trial" id="t1" onclick="enterTrial(2)">.</button></td>
+                <td><button class="btn btn-trial" id="t2" onclick="enterTrial(3)">.</button></td>
+                <td><button class="btn btn-trial" id="t3" onclick="enterTrial(4)">.</button></td>
+                <td><button class="btn btn-trial" id="t8" onclick="completeTrial()">Copmlete the trial.</button></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-trial" id="t4" onclick="enterTrial(5)">.</button></td>
+                <td><button class="btn btn-trial" id="t5" onclick="enterTrial(6)">.</button></td>
+                <td><button class="btn btn-trial" id="t6" onclick="enterTrial(7)">.</button></td>
+                <td><button class="btn btn-trial" id="t7" onclick="enterTrial(8)">.</button></td>
+                <td><button class="btn btn-trial" id="t9" onclick="exitTrial()">Exit the trial.</button></td>
+            </tr>
+        </table>
+    <canvas id="trial-canvas" class="canvas"></canvas></span>
 	<span id="optionsTab" class="tab"> <!-- Options Tab-->
         <button class="btn" onclick="changeTheme()">Change Theme<br>Currently <span id="theme">Light</span>.</button>
         <button class="btn" onclick="changeNotation()">Change Notation<br>Currently <span id="notation">Scientific</span>.</button>
@@ -209,19 +224,27 @@
         <button class="btn" onclick="resetGame()">Reset Game</button><br>
         <button class="btn" onclick="exportGame()">Export Game</button>
         <button class="btn" onclick="importGame()">Import Game</button>
-		<p id="amounts">Idea & a bit of code from <a href="https://ivark.github.io">Antimatter Dimensions</a>. Also using <a href="https://github.com/antimatter-dimensions/notations">notations</a>, <a href="https://github.com/pieroxy/lz-string">LZString</a>, and <a href="https://github.com/asvd/dragscroll">Dragscroll</a>. Why don't you join the  <a href="https://discord.io/treegame" style="font-size: 20px;">Discord Server</a>?</p>
+        <p id="amounts">Idea & a bit of code from <a href="https://ivark.github.io">Antimatter Dimensions</a>.
+            Also using <a href="https://github.com/antimatter-dimensions/notations">notations</a>,
+            <a href="https://github.com/pieroxy/lz-string">LZString</a>,
+            and <a href="https://github.com/asvd/dragscroll">Dragscroll</a>.
+            Why don't you join the  <a href="https://discord.io/treegame" style="font-size: 25px;">Discord Server</a>?
+        </p>
 	</span>
   
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/break_infinity.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@antimatter-dimensions/notations"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/dragscroll@0.0.8/dragscroll.min.js"></script>
-    <script type="text/javascript">const D=Decimal;</script>
+    <script type="text/javascript">const D=Decimal,$=_=>document.querySelector(_);</script>
     <script type="text/javascript" src="lzstring.js"></script>
+    <script type="text/javascript" src="mousetrap.js"></script>
+    <script type="text/javascript" src="keybind.js"></script>
 	<script type="text/javascript" src="render.js"></script>
     <script type="text/javascript" src="options.js"></script>
     <script type="text/javascript" src="rebirth.js"></script>
     <script type="text/javascript" src="choice.js"></script>
+    <script type="text/javascript" src="trial.js"></script>
     <script type="text/javascript" src="game.js" onload='if (localStorage.getItem("treegamesave") != null || localStorage.getItem("treegamesave") != undefined || localStorage.getItem("treegamesave") != "{}") load()'></script>
-    <script>let x = window.setTimeout(()=>{resizeCanvas("upg");resizeCanvas("reb");window.clearTimeout(x)}, 250);</script>
+    <script>let x = window.setTimeout(()=>{resizeCanvas("upg");resizeCanvas("reb");resizeCanvas("tri");window.clearTimeout(x)}, 250);</script>
 </body>
 </html>
