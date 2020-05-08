@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: hey guys what if i made up my own character
+about: i have this crazy idea about a currency called A
 title: ''
 labels: feature
 assignees: ''
