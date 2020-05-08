@@ -1,6 +1,6 @@
 ---
 name: UI improvement
-about: upgrade table is in a bad spot pls fix
+about: too many trees
 title: ''
 labels: 'ui improvement'
 assignees: ''
