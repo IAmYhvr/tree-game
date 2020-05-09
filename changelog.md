@@ -2,7 +2,7 @@
 
 Hey yo, this is a changelog, it's a markdown file cause I'm too lazy to make another HTML file
 
-## v `x+1` - May 9, 2020
+## v `x+1` - May 8, 2020
 - Fixed various bugs (#4, #5, #6)
 - Added customization to the tab bar
 - Shrunk the size of the discord link
