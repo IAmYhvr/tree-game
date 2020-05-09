@@ -19,12 +19,13 @@ const defaultGame = {
     },
     theme: 0,
     notation: 0,
+    tab: [0, 0],
     rebirthed: false,
     trialTreeUnlocked: false,
     inTrial: 0,
     trials: new Array(8).fill(0), // __only__ store completions, rest can be done with m a f s
     lastTick: Date.now(),
-    version: 7
+    version: 8
 }
 
 game = defaultGame
@@ -263,14 +264,12 @@ function update() {
 	document.querySelector("#y").innerHTML = ", " + not.format(game.y.amount, 2, 0) + "&hairsp;y"
 	document.querySelector("#z").innerHTML = ", " + not.format(game.z.amount, 2, 0) + "&hairsp;z"
     document.querySelector("#rp").innerHTML= ", " + not.format(game.rp.amount,2, 0) + "&hairsp;RP"
-    document.getElementById(54).innerHTML  = "Rebirth.<br>Cost: " + not.format(1e11,2,0) + "&hairsp;z<br>For " + (calcRP().exponent == 4500000000000000 ? not.format(0,2,0) : not.format(calcRP(),2,0)) + "&hairsp;RP"
+    if (game.inTrial == 0) document.getElementById(54).innerHTML = "Rebirth.<br>Cost: " + not.format(1e11,2,0) + "&hairsp;z<br>For " + (calcRP().exponent == 4500000000000000 ? not.format(0,2,0) : not.format(calcRP(),2,0)) + "&hairsp;RP"
+    else document.getElementById(54).innerHTML="Complete the trial.<br>Goal: " + (tri == "∞" ? tri : not.format(tri, 2, 0)) + "&hairsp;z"
     document.getElementById("t8").innerHTML= "Complete the trial.<br>Goal: " + (tri == "∞" ? tri : not.format(tri, 2, 0)) + "&hairsp;z"
 
-    let title = document.querySelector("title")
-    if (game.rp.amount.gt(0)) title.textContent = "Tree Game | " + not.format(game.rp.amount, 2, 0) + "RP"
-    else if (game.z.amount.gt(0)) title.textContent = "Tree Game | " + not.format(game.z.amount, 2, 0) + "z"
-    else if (game.y.amount.gt(0)) title.textContent = "Tree Game | " + not.format(game.y.amount, 2, 0) + "y"
-    else title.textContent = "Tree Game | " + not.format(game.x.amount, 2, 0) + "x"
+    let x = fetchTabbarValue()
+    document.querySelector("title").textContent = TABBAR_PREFIX[game.tab[0]] + not.format(x[0], 2, 0) + x[1]
 }
 
 // show intial tab so everything isn't on one screen
@@ -349,7 +348,7 @@ window.setInterval(() => {
             update(); return; }
 
         // autobuy x
-        if (r.includes(13)) {
+        if (game.rupgrades.includes(13)) {
             buyCurrency(15, "x")
             buybtn(16)
             buybtn(25)
@@ -365,7 +364,7 @@ window.setInterval(() => {
         }
 
         // autobuy y
-        if (r.includes(23)) {
+        if (game.rupgrades.includes(23)) {
             buybtn(35)
             buybtn(36)
             buybtn(37)
@@ -376,7 +375,7 @@ window.setInterval(() => {
         }
 
         // autobuy z
-        if (r.includes(33)) {
+        if (game.rupgrades.includes(33)) {
             buybtn(17)
             buybtn(33)
             buybtn(34)

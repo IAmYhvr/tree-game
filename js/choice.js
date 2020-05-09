@@ -46,6 +46,12 @@ function buyC(depth, choice) {
 
 function respec() {
     if (!game.rupgrades.includes(63)) return;
+    if (game.inTrial != 0) {
+        if (confirm("Respeccing while in a trial will exit the trial. Are you sure you want to do this?")) {
+            return;
+        }
+        exitTrial()
+    }
     let refundAmt = new D(0)
     game.choice.choices.map((x, y) => refundAmt = refundAmt.add(choiceCosts[y*2]))
     game.rp.amount = game.rp.amount.add(refundAmt)

@@ -2,7 +2,14 @@
 
 Hey yo, this is a changelog, it's a markdown file cause I'm too lazy to make another HTML file
 
-## v`x` - "Still not using version numbers" - May 7, 2020
+## v `x+1` - May 9, 2020
+- Fixed various bugs (#4, #5, #6)
+- Added customization to the tab bar
+- Shrunk the size of the discord link
+- More meta info for web crawlers, search engines, etc.
+- Exit trial when respeccing
+
+## v `x` - "Still not using version numbers" - May 7, 2020
 - Added Trial tree! Get there to see what it does.
 - Added "Strange" theme.
 - Added `m` keybind for buying all upgrades in the normal tree.

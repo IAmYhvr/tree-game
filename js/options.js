@@ -2,6 +2,31 @@
 var themes = ["Light", "Dark", "Auto", "Strange"]
 var notations = ["Scientific", "Engineering", "MixedScientific", "MixedEngineering", "Logarithm", "Letters", "Standard", "Dots", "Clock", "Blind"]
 var fancyNotations = [undefined, undefined, "Mixed Scientific", "Mixed Engineering"]
+const TABBAR_PREFIX = ["Tree Game | ", "TG | ", ""]
+const TABBAR_PREFIX_FANCY = ["Long", "Short", "None"]
+const TABBAR_SUFFIX_FANCY = ["x", "y", "z", "RP"]
+const fetchTabbarValue = () => {
+    let x = new Array(2);
+    x[1] = TABBAR_SUFFIX_FANCY[game.tab[1]]
+    switch (game.tab[1]) {
+        case 0:
+            x[0] = game.x.amount;
+            break;
+        case 1:
+            x[0] = game.y.amount;
+            break;
+        case 2:
+            x[0] = game.z.amount;
+            break;
+        case 3:
+            x[0] = game.rp.amount;
+            break;
+        default:
+            x[0] = game.x.amount;
+            x[1] = TABBAR_SUFFIX_FANCY[0]
+    }
+    return x
+}
 
 function changeTheme() {
     game.theme++
@@ -18,6 +43,18 @@ function changeNotation() {
     updateUpgrades()
     updateRebirthUpgrades()
     updateTrialTree()
+}
+
+function changeTabPrefix() {
+    game.tab[0]++
+    if (game.tab[0] == TABBAR_PREFIX.length) game.tab[0] = 0
+    document.getElementById("tabbarprefix").textContent = TABBAR_PREFIX_FANCY[game.tab[0]]
+}
+
+function changeTabSuffix() {
+    game.tab[1]++
+    if (game.tab[1] == TABBAR_SUFFIX_FANCY.length) game.tab[1] = 0
+    document.getElementById("tabbarsuffix").textContent = TABBAR_SUFFIX_FANCY[game.tab[1]]
 }
 
 // Recursively convert "Decimal" to string
@@ -105,6 +142,8 @@ function load() {
         sav.trials = new Array(8).fill(0)
         sav.inTrial = 0
         sav.version++
+    } if (sav.version == 7) {
+        sav.tab = [0, 0]
     }
     game = sav;
     not = new ADNotations[notations[game.notation] + "Notation"]
@@ -116,6 +155,8 @@ function load() {
     document.getElementById("themecss").href = "themes/" + themes[game.theme] + ".css"
     document.getElementById("theme").textContent = themes[game.theme]
     document.getElementById("notation").textContent = fancyNotations[game.notation] != null || fancyNotations[game.notation] != undefined ? fancyNotations[game.notation] : notations[game.notation]
+    document.getElementById("tabbarprefix").textContent = TABBAR_PREFIX_FANCY[game.tab[0]]
+    document.getElementById("tabbarsuffix").textContent = TABBAR_SUFFIX_FANCY[game.tab[1]]
     game.upgrades.forEach(upg => {
         document.getElementById(upg).classList.remove("btn-unbought")
         document.getElementById(upg).classList.add("btn-bought")

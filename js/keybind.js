@@ -25,4 +25,7 @@ Mousetrap.bind("m", () => {
     buybtn(57)
 })
 
-Mousetrap.bind("r", () => rebirth())
+Mousetrap.bind("r", () => {
+    if (game.inTrial == 0) rebirth()
+    else completeTrial()
+})

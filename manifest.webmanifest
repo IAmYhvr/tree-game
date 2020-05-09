@@ -1,7 +1,7 @@
 {
     "short_name": "Tree Game",
     "name": "Tree Game: The skill tree incremental",
-    "description": "Incremental game based around a skill tree",
+    "description": "Tree Game is an incremental game based around a skill tree.",
     "icons": [
       {
         "src": "/tree-game/images/TG-192.png",

@@ -43,9 +43,15 @@ function calcRP() {
     if (game.choice.choices[3] == 1) _4mult = 100 ** game.choice.choices.filter(x => x == 3).length
     if (game.choice.choices[3] == 2) _4mult = 100 ** game.choice.choices.filter(x => x == 2).length
     if (game.choice.choices[3] == 3) _4mult = 100 ** game.choice.choices.filter(x => x == 1).length
-    return new D(game.z.amount.div(game.choice.choices[0] == 1 ? 1 : 1e10).log10()).pow((game.choice.choices[0] == 2 ? 3/4 : 1/2)).floor().times(mult1).times(mult2).times(mult3).times(game.rupgrades.includes(31) ? xmult : 1)
-        .times(game.rupgrades.includes(41) ? ymult : 1).times(zmult).times(_4mult)
-        .times(x2mult).times(y2mult).times(z2mult).times(tm).pow(game.rupgrades.includes(45) ? 2 : 1)
+    return new D(game.z.amount.div(game.choice.choices[0] == 1 ? 1 : 1e10).log10())
+        .pow((game.choice.choices[0] == 2 ? 3/4 : 1/2)).floor()
+        .times(mult1).times(mult2).times(mult3)
+        .times(game.rupgrades.includes(31) ? xmult : 1)
+        .times(game.rupgrades.includes(41) ? ymult : 1)
+        .times(zmult).times(_4mult)
+        .times(x2mult).times(y2mult).times(z2mult)
+        .times(tm)
+        .pow(game.rupgrades.includes(45) ? 2 : 1)
         .times(game.rupgrades.includes(55) ? D.max(new D(game.rp.amount.log10()), 1) : 1)
 }
 
