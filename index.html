@@ -65,7 +65,7 @@
     <table class="table">
         <tr>
             <td><button class="btn btn-locked" id="53" onclick="buybtn(this)">Raise z production to the power of 3<br>Cost: 6.6e6z</button></td>
-            <td><button class="btn btn-locked" id="54" onclick="rebirth()">Rebirth<br>1e11&hairsp;z</button></td>
+            <td><button class="btn btn-locked" id="54" onclick="if (game.inTrial == 0) { rebirth() } else { completeTrial() } ">Rebirth<br>1e11&hairsp;z</button></td>
             <td><button class="btn btn-locked" id="55" onclick="buyCurrency(this, 'z')">Unlock z.<br>Cost: 7.5e15x</button></td>
             <td><button class="btn btn-locked" id="56" onclick="buybtn(this)">Multiply y production by 7.<br>Cost: 5e4y</button></td>
             <td><button class="btn btn-locked" id="57" onclick="buybtn(this)">Multiply z production by 2.<br>Cost: 5e5y</button></td>
@@ -236,7 +236,7 @@
             <a href="https://github.com/pieroxy/lz-string">LZString</a>,
             <a href="https://github.com/asvd/dragscroll">Dragscroll</a>,
             and <a href="https://craig.is/killing/mice">Mousetrap</a>.
-            Why don't you join the  <a href="https://discord.io/treegame">Discord Server</a>?
+            Why don't you join the <a href="discord_warning.html">Discord Server</a>?
         </p>
 	</span>
   
