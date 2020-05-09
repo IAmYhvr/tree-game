@@ -51,13 +51,13 @@ body {
 }
 
 .btn:not(.tabbtn):hover {
-    width: 175px;
-    height: 85px;
+    width: 172px;
+    height: 82px;
 }
 
 .btn:not(.tabbtn):active {
-    width: 160px;
-    height: 75px;
+    width: 165px;
+    height: 77.5px;
 }
 
 .btn-bought {

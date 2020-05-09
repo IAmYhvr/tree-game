@@ -2,6 +2,12 @@
 
 Hey yo, this is a changelog, it's a markdown file cause I'm too lazy to make another HTML file
 
+## v `x+2` - May 9, 2020
+- Added bulk trial completion
+- More RP mults
+- Made trial 1 and 3 goal scaling harsher
+- Fix issue #7
+
 ## v `x+1` - May 8, 2020
 - Fixed various bugs (#4, #5, #6)
 - Added customization to the tab bar

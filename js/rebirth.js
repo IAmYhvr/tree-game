@@ -53,6 +53,8 @@ function calcRP() {
         .times(tm)
         .pow(game.rupgrades.includes(45) ? 2 : 1)
         .times(game.rupgrades.includes(55) ? D.max(new D(game.rp.amount.log10()), 1) : 1)
+        .times(game.rupgrades.includes(75) ? D.max(new D(game.rp.amount.log2()), 1) : 1)
+        .times(game.rupgrades.includes(95) ? D.max(new D(game.rp.amount.pow(.1)), 1) : 1)
 }
 
 // documentation somewhere around game.js:101

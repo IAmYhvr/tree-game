@@ -35,16 +35,19 @@ function drawStudyTree(can) {
         canv = canvas
         children = childList
         ext = ""
+        updateUpgrades()
     } else if (can == "reb") {
         ct = rctx
         canv = rcanvas
         children = rebirthChildList
         ext = "r"
+        updateRebirthUpgrades()
     } else if (can == "tri") {
         ct = tctx
         canv = tcanvas//0   1    2    3    4   5   6
         children = [[1, 5], [2], [3], [6], [], [4], [7]]
         ext = "t"
+        updateTrialTree()
     }
     ct.clearRect(0, 0, canv.width, canv.height);
 	for (arr in children) {
@@ -147,19 +150,19 @@ const rebirthUpgradeInfo = {
     55: ["RP Boosts RP gain.", 1e89],
 
     63: ["Unlock Choice Tree.", 1e13],
-    65: ["TBA", 2e222],
-    75: ["TBA", 2e222],
-    85: ["TBA", 2e222],
-    95: ["TBA", 2e222],
-    105: ["TBA", 2e222],
-    115: ["TBA", 2e222],
-    125: ["TBA", 2e222],
-    135: ["TBA", 2e222],
-    145: ["TBA", 2e222],
-    155: ["TBA", 2e222],
-    165: ["TBA", 2e222],
-    175: ["TBA", 2e222],
-    185: ["TBA", 2e222],
+    65: ["You can bulk complete trials 5 times.", 1e100],
+    75: ["RP Boosts RP gain even more.", 5e104],
+    85: ["You can bulk complete trials 10 times.", 1e107],
+    95: ["RP Boosts RP gain even more than last time.", 1.11e111],
+    105: ["You can bulk complete trials 25 times.", 1e125],
+    115: ["TBA", "5e555"],
+    125: ["TBA", "5e555"],
+    135: ["TBA", "5e555"],
+    145: ["TBA", "5e555"],
+    155: ["TBA", "5e555"],
+    165: ["TBA", "5e555"],
+    175: ["TBA", "5e555"],
+    185: ["TBA", "5e555"],
 }
 
 const choiceUpgrades = {
@@ -232,6 +235,6 @@ function updateChoiceUpgrades() {
 function updateTrialTree() {
     for (key in trialInfo) {
         let dat = trialInfo[key]
-        document.getElementById("t"+key).innerHTML = dat + "<br>" + not.format(game.trials[key]) + " Completion" + (game.trials[key] == 1 ? "" : "s")
+        document.getElementById("t"+key).innerHTML = dat + "<br>" + not.format(game.trials[key], 2, 0) + " Completion" + (game.trials[key] == 1 ? "" : "s")
     }
 }
